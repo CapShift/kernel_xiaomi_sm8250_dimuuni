@@ -40,6 +40,7 @@
 
 #define CCI_TIMEOUT msecs_to_jiffies(100)
 
+#define NUM_MASTERS 2
 #define NUM_QUEUES 2
 
 #define CCI_PINCTRL_STATE_DEFAULT "cci_default"
@@ -124,7 +125,7 @@ struct cam_cci_i2c_queue_info {
 };
 
 struct cam_cci_master_info {
-	int32_t status;
+	uint32_t status;
 	atomic_t q_free[NUM_QUEUES];
 	uint8_t q_lock[NUM_QUEUES];
 	uint8_t reset_pending;
@@ -136,10 +137,10 @@ struct cam_cci_master_info {
 	struct completion report_q[NUM_QUEUES];
 	atomic_t done_pending[NUM_QUEUES];
 	spinlock_t lock_q[NUM_QUEUES];
+	spinlock_t freq_cnt;
 	struct semaphore master_sem;
-	spinlock_t freq_cnt_lock;
+	bool is_first_req;
 	uint16_t freq_ref_cnt;
-	bool is_initilized;
 };
 
 struct cam_cci_clk_params_t {
@@ -174,7 +175,6 @@ enum cam_cci_state_t {
  * @cci_clk_info:               CCI clock information
  * @cam_cci_i2c_queue_info:     CCI queue information
  * @i2c_freq_mode:              I2C frequency of operations
- * @master_active_slave:        Number of active/connected slaves for master
  * @cci_clk_params:             CCI hw clk params
  * @cci_gpio_tbl:               CCI GPIO table
  * @cci_gpio_tbl_size:          GPIO table size
@@ -207,10 +207,9 @@ struct cci_device {
 	uint8_t ref_count;
 	enum cam_cci_state_t cci_state;
 	struct cam_cci_i2c_queue_info
-		cci_i2c_queue_info[MASTER_MAX][NUM_QUEUES];
-	struct cam_cci_master_info cci_master_info[MASTER_MAX];
-	enum i2c_freq_mode i2c_freq_mode[MASTER_MAX];
-	uint8_t master_active_slave[MASTER_MAX];
+		cci_i2c_queue_info[NUM_MASTERS][NUM_QUEUES];
+	struct cam_cci_master_info cci_master_info[NUM_MASTERS];
+	enum i2c_freq_mode i2c_freq_mode[NUM_MASTERS];
 	struct cam_cci_clk_params_t cci_clk_params[I2C_MAX_MODES];
 	struct msm_pinctrl_info cci_pinctrl;
 	uint8_t cci_pinctrl_status;
@@ -275,6 +274,7 @@ struct cam_sensor_cci_client {
 	uint16_t retries;
 	uint16_t id_map;
 	uint16_t cci_device;
+	uint16_t disable_optmz; //xiaomi add the flag to disable CCI optimization
 };
 
 struct cam_cci_ctrl {
@@ -287,7 +287,6 @@ struct cam_cci_ctrl {
 		struct cam_cci_wait_sync_cfg cci_wait_sync_cfg;
 		struct cam_cci_gpio_cfg gpio_cfg;
 	} cfg;
-	bool force_low_priority;
 };
 
 struct cci_write_async {
@@ -303,6 +302,6 @@ irqreturn_t cam_cci_irq(int irq_num, void *data);
 struct v4l2_subdev *cam_cci_get_subdev(int cci_dev_index);
 
 #define VIDIOC_MSM_CCI_CFG \
-	_IOWR('V', BASE_VIDIOC_PRIVATE + 23, struct cam_cci_ctrl)
+	_IOWR('V', BASE_VIDIOC_PRIVATE + 23, struct cam_cci_ctrl *)
 
 #endif /* _CAM_CCI_DEV_H_ */
