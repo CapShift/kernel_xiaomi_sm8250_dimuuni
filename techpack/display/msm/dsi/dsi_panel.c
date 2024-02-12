@@ -936,6 +936,8 @@ int dsi_panel_set_backlight(struct dsi_panel *panel, u32 bl_lvl)
 			} else if (mi_cfg->thermal_hbm_disabled && bl_lvl > 2047 && mi_cfg->last_bl_level == 0) {
 				bl_lvl = 2047;
 				rc = dsi_panel_update_backlight(panel, bl_lvl);
+			} else if (bl_lvl && bl_lvl < mi_cfg->dc_threshold){
+				rc = dsi_panel_update_backlight(panel, mi_cfg->dc_threshold);
 			} else {
 				rc = dsi_panel_update_backlight(panel, bl_lvl);
 			}

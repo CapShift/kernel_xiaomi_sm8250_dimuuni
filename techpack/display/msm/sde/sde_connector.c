@@ -3704,3 +3704,98 @@ void sde_connector_mi_update_dimlayer_state(struct drm_connector *connector,
 	struct sde_connector *c_conn = to_sde_connector(connector);
 	c_conn->mi_dimlayer_state.mi_dimlayer_type = mi_dimlayer_type;
 }
+
+static const brightness_alpha brightness_dc_alpha_lut[] = {
+	/* {brightness, alpha} */
+	{0, 0xFF},
+	{2, 0xD7},
+	{20, 0xB9},
+	{35, 0xAA},
+	{50, 0x9B},
+	{65, 0x8C},
+	{80, 0x7D},
+	{90, 0x78},
+	{100, 0x73},
+	{120, 0x6C},
+	{140, 0x64},
+	{160, 0x5A},
+	{180, 0x50},
+	{200, 0x46},
+	{240, 0x32},
+	{270, 0x28},
+	{360, 0x1E},
+	{440, 0x00}
+};
+
+static uint32_t brightness_to_dc_alpha(uint32_t brightness)
+{
+	int level = ARRAY_SIZE(brightness_dc_alpha_lut);
+	int i;
+
+	if (brightness == 0x0)
+		return brightness_dc_alpha_lut[0].alpha;
+
+	for (i = 0; i < level; i++){
+		if (brightness_dc_alpha_lut[i].brightness >= brightness)
+			break;
+	}
+
+	if (i == level)
+		return brightness_dc_alpha_lut[i - 1].alpha;
+	else
+		return interpolate(brightness,
+							brightness_dc_alpha_lut[i-1].brightness, brightness_dc_alpha_lut[i].brightness,
+							brightness_dc_alpha_lut[i-1].alpha, brightness_dc_alpha_lut[i].alpha);
+}
+
+void sde_connector_dc_get_current_alpha(struct drm_connector *connector, uint32_t brightness, uint32_t *alpha)
+{
+	struct dsi_display *display = NULL;
+	struct dsi_bridge *c_bridge = NULL;
+	
+	if (!connector || !connector->encoder || !connector->encoder->bridge) {
+		SDE_ERROR("Invalid connector/encoder/bridge ptr\n");
+		return;
+	}
+
+	c_bridge =  to_dsi_bridge(connector->encoder->bridge);
+	display = c_bridge->display;
+
+	if (!display || !display->panel) {
+		SDE_ERROR("invalid display/panel ptr\n");
+		return;
+	}
+
+	*alpha = brightness_to_dc_alpha(brightness);
+	return;
+}
+
+
+void sde_connector_dc_get_current_backlight(struct drm_connector *connector, uint32_t *brightness)
+{
+	struct sde_connector *c_conn = to_sde_connector(connector);
+	struct dsi_display *display = NULL;
+	struct dsi_bridge *c_bridge = NULL;
+
+	if (!connector || !connector->encoder || !connector->encoder->bridge) {
+		SDE_ERROR("Invalid connector/encoder/bridge ptr\n");
+		return;
+	}
+
+	c_bridge =  to_dsi_bridge(connector->encoder->bridge);
+	display = c_bridge->display;
+
+	if (!display || !display->panel) {
+		SDE_ERROR("invalid display/panel ptr\n");
+		return;
+	}
+
+	if (display->panel->mi_cfg.in_aod || display->panel->mi_cfg.hbm_enabled) {
+		*brightness = display->panel->mi_cfg.dc_threshold;
+		return;
+	}
+
+	*brightness = c_conn->mi_dimlayer_state.current_backlight;
+}
+
+
