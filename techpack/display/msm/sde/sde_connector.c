@@ -3776,6 +3776,7 @@ void sde_connector_dc_get_current_backlight(struct drm_connector *connector, uin
 	struct sde_connector *c_conn = to_sde_connector(connector);
 	struct dsi_display *display = NULL;
 	struct dsi_bridge *c_bridge = NULL;
+	struct dsi_panel_mi_cfg *mi_cfg;
 
 	if (!connector || !connector->encoder || !connector->encoder->bridge) {
 		SDE_ERROR("Invalid connector/encoder/bridge ptr\n");
@@ -3790,7 +3791,8 @@ void sde_connector_dc_get_current_backlight(struct drm_connector *connector, uin
 		return;
 	}
 
-	if (display->panel->mi_cfg.in_aod || display->panel->mi_cfg.hbm_enabled) {
+	mi_cfg = &display->panel->mi_cfg;
+	if (mi_cfg->in_aod || mi_cfg->hbm_enabled || !display->panel->dc_dimming_enabled){
 		*brightness = display->panel->mi_cfg.dc_threshold;
 		return;
 	}
