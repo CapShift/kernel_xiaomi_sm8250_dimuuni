@@ -107,7 +107,6 @@ enum hvdcp3_type {
  * the warm threshold
  */
 #define JEITA_HYSTERESIS			20
-#define JEITA_HYSTERESIS_DAGU			21
 
 #define HIGH_CAPACITY_TRH			85
 
@@ -225,7 +224,6 @@ typedef struct {
 	struct bq2597x			bq2597x;
 	struct sw_charger			sw_chager;
 	struct votable		*fcc_votable;
-	struct votable		*fv_votable;
 
 	struct power_supply *fc_psy;
 	struct power_supply *sw_psy;
