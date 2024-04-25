@@ -13,15 +13,21 @@
 #define BQ_REPORT_FULL_SOC 9800
 #define BQ_CHARGE_FULL_SOC 9780
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 #ifdef CONFIG_DUAL_FUEL_GAUGE_BQ27Z561_DAGU
 #define BQ_RECHARGE_SOC 9820
 #else
 #define BQ_RECHARGE_SOC 9900
 #endif
 
+<<<<<<< HEAD
 =======
 #define BQ_RECHARGE_SOC 9900
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 #define BQ_RESET_BATT_CTRL_SOC 9000
 
 struct dual_fg_info {
@@ -36,13 +42,19 @@ struct dual_fg_info {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 #ifndef CONFIG_DUAL_FUEL_GAUGE_BQ27Z561_DAGU
 int Dual_Fg_Check_Chg_Fg_Status_And_Disable_Chg_Path(void);
 #endif
 
+<<<<<<< HEAD
 =======
 int Dual_Fg_Check_Chg_Fg_Status_And_Disable_Chg_Path(void);
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 int Dual_Fg_Reset_Batt_Ctrl_gpio_default(void);
 int Dual_Fuel_Gauge_Batt_Ctrl_Init(void);
 

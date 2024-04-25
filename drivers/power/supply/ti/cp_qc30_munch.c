@@ -1246,6 +1246,7 @@ static int cp_flash2_charge(unsigned int port)
 	static int ibus_limit, ibat_limit;
 	int thermal_level = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	uint16_t effective_fcc_val = cp_get_effective_fcc_val(pm_state);
 	uint16_t effective_ibus_val = cp_get_effective_fcc_val(pm_state) / 2;
 =======
@@ -1262,6 +1263,10 @@ static int cp_flash2_charge(unsigned int port)
 		}
 	}
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+	uint16_t effective_fcc_val = cp_get_effective_fcc_val(pm_state);
+	uint16_t effective_ibus_val = cp_get_effective_fcc_val(pm_state)/2;
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 
 	qc3_get_batt_current_thermal_level(&thermal_level);
 	qc3_check_night_charging_enabled();
@@ -1273,6 +1278,7 @@ static int cp_flash2_charge(unsigned int port)
 	pm_state.ibus_limits = ibus_limit;
 	pm_state.effective_ibus = effective_ibus_val;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	pr_info("ibus_limit: %d\n", ibus_limit);
 
 	pr_info("vbus=%d, ibus=%d, vbat=%d, ibat=%d, ibus_target_val=%d\n",
@@ -1281,6 +1287,9 @@ static int cp_flash2_charge(unsigned int port)
 		effective_ibus_val);
 =======
 	pr_info("ibus_limit: %d,smart_batt:%d\n", ibus_limit,pval.intval);
+=======
+	pr_info("ibus_limit: %d\n", ibus_limit);
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 
 	pr_info("vbus=%d, ibus=%d, vbat=%d, ibat=%d, ibus_target_val=%d\n",
 				pm_state.bq2597x.vbus_volt,
@@ -1391,7 +1400,7 @@ static int cp_flash2_charge(unsigned int port)
 		&& pm_state.bq2597x.ibus_curr < ibus_limit
 		&& !pm_state.bq2597x.bus_ocp_alarm
 		&& !pm_state.bq2597x.bus_ovp_alarm
-		&& pm_state.bq2597x.vbat_volt < sys_config.bat_volt_lp_lmt - 50 - pval.intval
+		&& pm_state.bq2597x.vbat_volt < sys_config.bat_volt_lp_lmt - 50
 		&& pm_state.bq2597x.ibat_curr < sys_config.bat_curr_lp_lmt
 		&& pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
 
@@ -1401,7 +1410,7 @@ static int cp_flash2_charge(unsigned int port)
 		&& pm_state.bq2597x.ibus_curr < ibus_limit - 300
 		&& !pm_state.bq2597x.bus_ocp_alarm
 		&& !pm_state.bq2597x.bus_ovp_alarm
-		&& pm_state.bq2597x.vbat_volt < sys_config.bat_volt_lp_lmt - 50 - pval.intval
+		&& pm_state.bq2597x.vbat_volt < sys_config.bat_volt_lp_lmt - 50
 		&& pm_state.bq2597x.ibat_curr < sys_config.bat_curr_lp_lmt - 600)
 
 		cp_tune_vbus_volt(VOLT_UP);
@@ -1409,7 +1418,7 @@ static int cp_flash2_charge(unsigned int port)
 	if (pm_state.bq2597x.bus_ocp_alarm
 		|| pm_state.bq2597x.bus_ovp_alarm
 		|| pm_state.bq2597x.vbat_reg
-		|| pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - pval.intval
+		|| pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt
 		|| pm_state.bq2597x.ibat_curr > sys_config.bat_curr_lp_lmt + 500
 		|| pm_state.bq2597x.ibus_curr > ibus_limit + 310) {
 
@@ -1451,10 +1460,14 @@ static int cp_flash2_charge(unsigned int port)
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100 &&
 	    pm_state.bq2597x.ibat_curr < sys_config.fc2_taper_current) {
 =======
 	if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100 - pval.intval &&
+=======
+	if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100 &&
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 			pm_state.bq2597x.ibat_curr < sys_config.fc2_taper_current) {
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		if (fc2_taper_timer++ > TAPER_TIMEOUT) {
@@ -1520,10 +1533,13 @@ void cp_statemachine(unsigned int port)
 	static bool recovery;
 	static int cp_enable_fail_count;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	union power_supply_propval pval = {0, };
 	int rc = -1;
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 
 	if (!pm_state.bq2597x.vbus_pres) {
 		pm_state.state = CP_STATE_DISCONNECT;
@@ -1545,6 +1561,7 @@ void cp_statemachine(unsigned int port)
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	if(pm_state.sw_psy) {
 		rc = power_supply_get_property(pm_state.sw_psy,
@@ -1555,6 +1572,8 @@ void cp_statemachine(unsigned int port)
 		pr_info("smart_batt:%d\n",pval.intval);
 	}
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 	switch (pm_state.state) {
 	case CP_STATE_DISCONNECT:
 		if (pm_state.bq2597x.charge_enabled) {
@@ -1629,7 +1648,7 @@ void cp_statemachine(unsigned int port)
 				pr_info("thermal too high or batt temp out of range or slowly charging, waiting...\n");
 			} else if (pm_state.bq2597x.vbat_volt < sys_config.min_vbat_start_flash2)
 				cp_move_state(CP_STATE_SW_ENTRY);
-			else if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100 - pval.intval
+			else if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100
 					|| pm_state.capacity >= HIGH_CAPACITY_TRH) {
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				pm_state.sw_near_cv = true;
@@ -1707,7 +1726,7 @@ void cp_statemachine(unsigned int port)
 			pr_info("thermal(%d) too high or batt temp out of range\n", thermal_level);
 		}
 		cp_get_batt_capacity();
-		if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100 - pval.intval
+		if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100
 					|| pm_state.capacity >= HIGH_CAPACITY_TRH) {
 				pm_state.sw_near_cv = true;
 		} else {
@@ -1841,8 +1860,7 @@ void cp_statemachine(unsigned int port)
 				    BUS_VOLT_INIT_UP - 50)) {
 =======
 						pm_state.bq2597x.vbus_volt, tune_vbus_retry);
-//#ifdef CONFIG_CHARGER_LN8000
-#if 1
+#ifdef CONFIG_CHARGER_LN8000
 			} else if (pm_state.bq2597x.vbus_volt < (pm_state.bq2597x.vbat_volt * 2 + BUS_VOLT_INIT_UP - 50)) {
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				tune_vbus_retry = cp_get_qc_pulse_cnt();

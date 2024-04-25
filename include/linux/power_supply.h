@@ -214,9 +214,12 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_CAPACITY_ALERT_MAX, /* in percents! */
 	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	POWER_SUPPLY_PROP_CP_TO_SW_STATUS,
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 	POWER_SUPPLY_PROP_SHUTDOWN_DELAY,
 	POWER_SUPPLY_PROP_SHUTDOWN_DELAY_ENABLE,
 	POWER_SUPPLY_PROP_SOC_DECIMAL,
@@ -243,11 +246,15 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_FFC_TERMINATION_BBC,
 	POWER_SUPPLY_PROP_MTBF_CURRENT,
 <<<<<<< HEAD
+<<<<<<< HEAD
 	POWER_SUPPLY_PROP_HAS_DP,
 =======
 	POWER_SUPPLY_PROP_ENABLE_BYPASS_MODE,
 	POWER_SUPPLY_PROP_SMART_BATT,
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+	POWER_SUPPLY_PROP_HAS_DP,
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 	/* Local extensions */
 	POWER_SUPPLY_PROP_USB_HC,
 	POWER_SUPPLY_PROP_USB_OTG,
@@ -460,6 +467,9 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_NIGHT_CHARGING,
 	POWER_SUPPLY_PROP_I2C_ERROR_COUNT,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 	/* PS5169 properties */
 	POWER_SUPPLY_PROP_PS_EN,
 	POWER_SUPPLY_PROP_PS_CHIPID,
@@ -475,10 +485,13 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_EQ1_TX,
 	POWER_SUPPLY_PROP_EQ2_TX,
 	POWER_SUPPLY_PROP_TX_GAIN,
+<<<<<<< HEAD
 =======
 	POWER_SUPPLY_PROP_AVG_CURRENT,
 	POWER_SUPPLY_PROP_CHARGING_MODE,
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 #ifdef CONFIG_BATT_VERIFY_BY_DS28E16
 	/* battery verify properties */
 	POWER_SUPPLY_PROP_ROMID,
@@ -498,9 +511,13 @@ enum power_supply_property {
 #endif
 	POWER_SUPPLY_PROP_CHIP_OK,
 <<<<<<< HEAD
+<<<<<<< HEAD
 	POWER_SUPPLY_PROP_SMART_BATTERY,
 =======
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+	POWER_SUPPLY_PROP_SMART_BATTERY,
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 	/* DIV 2 properties */
 	POWER_SUPPLY_PROP_DIV_2_MODE,
 	POWER_SUPPLY_PROP_REVERSE_CHG_MODE,

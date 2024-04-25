@@ -205,6 +205,7 @@ enum hvdcp3_type {
 #define PM_WORK_TIME_100MS 100
 =======
 #define JEITA_HYSTERESIS			20
+#define JEITA_HYSTERESIS_DAGU			21
 
 #define HIGH_CAPACITY_TRH			85
 
@@ -366,7 +367,11 @@ typedef struct {
 	struct bq2597x			bq2597x;
 	struct sw_charger			sw_chager;
 	struct votable		*fcc_votable;
+<<<<<<< HEAD
 >>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+	struct votable		*fv_votable;
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 
 	struct power_supply *fc_psy;
 	struct power_supply *sw_psy;
