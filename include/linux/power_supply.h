@@ -213,6 +213,10 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN, /* in percents! */
 	POWER_SUPPLY_PROP_CAPACITY_ALERT_MAX, /* in percents! */
 	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
+<<<<<<< HEAD
+=======
+	POWER_SUPPLY_PROP_CP_TO_SW_STATUS,
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	POWER_SUPPLY_PROP_SHUTDOWN_DELAY,
 	POWER_SUPPLY_PROP_SHUTDOWN_DELAY_ENABLE,
 	POWER_SUPPLY_PROP_SOC_DECIMAL,
@@ -238,7 +242,12 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_CALIBRATE,
 	POWER_SUPPLY_PROP_FFC_TERMINATION_BBC,
 	POWER_SUPPLY_PROP_MTBF_CURRENT,
+<<<<<<< HEAD
 	POWER_SUPPLY_PROP_HAS_DP,
+=======
+	POWER_SUPPLY_PROP_ENABLE_BYPASS_MODE,
+	POWER_SUPPLY_PROP_SMART_BATT,
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	/* Local extensions */
 	POWER_SUPPLY_PROP_USB_HC,
 	POWER_SUPPLY_PROP_USB_OTG,
@@ -450,6 +459,7 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_STEP_VFLOAT_INDEX,
 	POWER_SUPPLY_PROP_NIGHT_CHARGING,
 	POWER_SUPPLY_PROP_I2C_ERROR_COUNT,
+<<<<<<< HEAD
 	/* PS5169 properties */
 	POWER_SUPPLY_PROP_PS_EN,
 	POWER_SUPPLY_PROP_PS_CHIPID,
@@ -465,6 +475,10 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_EQ1_TX,
 	POWER_SUPPLY_PROP_EQ2_TX,
 	POWER_SUPPLY_PROP_TX_GAIN,
+=======
+	POWER_SUPPLY_PROP_AVG_CURRENT,
+	POWER_SUPPLY_PROP_CHARGING_MODE,
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 #ifdef CONFIG_BATT_VERIFY_BY_DS28E16
 	/* battery verify properties */
 	POWER_SUPPLY_PROP_ROMID,
@@ -483,7 +497,10 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_MAXIM_BATT_CYCLE_COUNT,
 #endif
 	POWER_SUPPLY_PROP_CHIP_OK,
+<<<<<<< HEAD
 	POWER_SUPPLY_PROP_SMART_BATTERY,
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	/* DIV 2 properties */
 	POWER_SUPPLY_PROP_DIV_2_MODE,
 	POWER_SUPPLY_PROP_REVERSE_CHG_MODE,

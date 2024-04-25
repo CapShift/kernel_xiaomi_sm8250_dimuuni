@@ -232,7 +232,11 @@ struct smb5 {
 
 static struct smb_charger *__smbchg;
 
+<<<<<<< HEAD
 static int __debug_mask;
+=======
+static int __debug_mask = PR_MISC | PR_WLS | PR_OEM | PR_PARALLEL;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 static ssize_t pd_disabled_show(struct device *dev, struct device_attribute
 				*attr, char *buf)

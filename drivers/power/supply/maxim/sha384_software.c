@@ -58,8 +58,12 @@
 /// TRUE - command successful @n
 /// FALSE - command failed
 ///
+<<<<<<< HEAD
 int sha3_256_hmac(unsigned char *key, int key_len, unsigned char *message,
 		  int msg_len, unsigned char *mac)
+=======
+int sha3_256_hmac(unsigned char *key, int key_len, unsigned char *message, int msg_len, unsigned char *mac)
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 {
 	int i;
 	unsigned char thash[256];
@@ -77,7 +81,11 @@ int sha3_256_hmac(unsigned char *key, int key_len, unsigned char *message,
 
 	//  Check to see if key is larger then blocksize
 	if (key_len > blocksize)
+<<<<<<< HEAD
 		return 0; // Not supported
+=======
+		return 0;  // Not supported
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	// check for blocks too big
 	if (msg_len > 512)

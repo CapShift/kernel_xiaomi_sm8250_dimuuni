@@ -1,13 +1,21 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
 
 menu "Maxim Integrated Charger and Fuel Gauge support"
 
 config BATT_VERIFY_BY_DS28E16
 	bool "Support ds28e16 as encryption IC."
+=======
+config BATT_VERIFY_BY_DS28E16
+	bool
+	prompt "Support ds28e16 as encryption IC."
+	default n
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	help
 		It needs a onewire physical controller to work.
 
 config ONEWIRE_GPIO
+<<<<<<< HEAD
 	bool "Support Onewire Driver."
 	help
 		It's an onewire driver.
@@ -23,3 +31,10 @@ config CP_MAX77932
 	  Say Y to enable support for charger pump driver
 
 endmenu
+=======
+	bool
+	prompt "Support Onewire Driver."
+	default n
+	help
+		It's an onewire driver.
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")

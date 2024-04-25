@@ -558,6 +558,15 @@ static const struct apsd_result *smblib_get_apsd_result(struct smb_charger *chg)
 	u8 apsd_stat, stat;
 	const struct apsd_result *result = &smblib_apsd_results[UNKNOWN];
 
+<<<<<<< HEAD
+=======
+	if(chg->hvdcp_det_lock == true) {
+		result = &smblib_apsd_results[DCP];
+		smblib_dbg(chg, PR_OEM, "hold apsd result to DCP for bootup pd check!\n");
+		return result;
+	}
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	rc = smblib_read(chg, APSD_STATUS_REG, &apsd_stat);
 	if (rc < 0) {
 		smblib_err(chg, "Couldn't read APSD_STATUS rc=%d\n", rc);
@@ -1533,9 +1542,15 @@ static const struct apsd_result *smblib_update_usb_type(struct smb_charger *chg)
 	if(chg->mtbf_current >= 1500){
 		chg->real_charger_type = POWER_SUPPLY_TYPE_USB_CDP;
 		chg->usb_psy_desc.type = POWER_SUPPLY_TYPE_USB_CDP;
+<<<<<<< HEAD
 		smblib_dbg(chg, PR_REGISTER, "mtbf current 1500 and force to CDP!\n");
 	}
 	smblib_dbg(chg, PR_REGISTER, "APSD=%s PD=%d QC3P5=%d\n",
+=======
+		smblib_dbg(chg, PR_OEM, "mtbf current 1500 and force to CDP!\n");
+	}
+	smblib_dbg(chg, PR_OEM, "APSD=%s PD=%d QC3P5=%d\n",
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			apsd_result->name, chg->pd_active, chg->qc3p5_detected);
 	return apsd_result;
 }
@@ -1865,7 +1880,11 @@ static int set_sdp_current(struct smb_charger *chg, int icl_ua)
 	return rc;
 }
 
+<<<<<<< HEAD
 #define CLEAN_CP_TO_SW_DELAY_MS 500
+=======
+#define CLEAN_CP_TO_SW_DELAY_MS 2500
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 int smblib_set_icl_current(struct smb_charger *chg, int icl_ua)
 {
 	int rc = 0;
@@ -3115,7 +3134,11 @@ int smblib_get_prop_batt_charge_done(struct smb_charger *chg,
 				return 0;
 		}
 
+<<<<<<< HEAD
 		if (smblib_get_fastcharge_mode(chg) == true)
+=======
+		if (smblib_get_fastcharge_mode(chg) == true && (pval.intval >= 99))
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			smblib_set_fastcharge_mode(chg, false);
 	}
 	return 0;
@@ -3490,6 +3513,12 @@ static int smblib_therm_charging(struct smb_charger *chg)
 	int thermal_fcc_ua = 0;
 	int rc;
 
+<<<<<<< HEAD
+=======
+	if (chg->thermal_remove)
+			chg->system_temp_level = 0;
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (chg->system_temp_level >= MAX_TEMP_LEVEL)
 		return 0;
 
@@ -3614,9 +3643,18 @@ int smblib_set_prop_system_temp_level(struct smb_charger *chg,
 
 	chg->system_temp_level = val->intval;
 
+<<<<<<< HEAD
 	smblib_dbg(chg, PR_OEM, "thermal level:%d, thermal_levels:%d "
 			"chg->system_temp_level:%d, charger_type:%d\n",
 			val->intval, chg->thermal_levels,
+=======
+	if (chg->thermal_remove)
+		chg->system_temp_level = 0;
+
+	smblib_dbg(chg, PR_OEM, "thermal_remove:%d, thermal level:%d, thermal_levels:%d "
+			"chg->system_temp_level:%d, charger_type:%d\n",
+			chg->thermal_remove,val->intval, chg->thermal_levels,
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			chg->system_temp_level, chg->real_charger_type);
 
 	/* Check whether USB is online or not */
@@ -3869,8 +3907,13 @@ static void dump_regs(struct smb_charger *chg)
 	dump_reg(chg, MISC_BASE + addr, NULL);
 }
 
+<<<<<<< HEAD
 #define CHARGING_PERIOD_S		20
 #define NOT_CHARGING_PERIOD_S		60
+=======
+#define CHARGING_PERIOD_S		300
+#define NOT_CHARGING_PERIOD_S		1200
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 static void smblib_reg_work(struct work_struct *work)
 {
 	struct smb_charger *chg = container_of(work, struct smb_charger,
@@ -3879,6 +3922,7 @@ static void smblib_reg_work(struct work_struct *work)
 	union power_supply_propval val;
 	int icl_settle, usb_cur_in, usb_vol_in, icl_sts;
 	int charger_type, typec_mode, typec_orientation, esr_uohms_nominal, esr_uohms_actual, resistance;
+<<<<<<< HEAD
 	power_supply_get_property(chg->usb_psy,
 				POWER_SUPPLY_PROP_VOLTAGE_NOW,
 				&val);
@@ -3887,6 +3931,12 @@ static void smblib_reg_work(struct work_struct *work)
 	dump_regs(chg);
 	rc = smblib_get_prop_usb_present(chg, &val);
 	if (rc < 0||usb_vol_in < 1000) {
+=======
+
+	dump_regs(chg);
+	rc = smblib_get_prop_usb_present(chg, &val);
+	if (rc < 0) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		pr_err("Couldn't get usb present rc=%d\n", rc);
 		schedule_delayed_work(&chg->reg_work,
 				NOT_CHARGING_PERIOD_S * HZ);
@@ -3898,7 +3948,11 @@ static void smblib_reg_work(struct work_struct *work)
 					get_effective_result(chg->awake_votable),
 					get_effective_client(chg->awake_votable));
 
+<<<<<<< HEAD
 	if (usb_present||usb_vol_in > 4000) {
+=======
+	if (usb_present) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		smblib_dbg(chg, PR_OEM, "ICL vote value is %d voted by %s\n",
 					get_effective_result(chg->usb_icl_votable),
 					get_effective_client(chg->usb_icl_votable));
@@ -3909,6 +3963,7 @@ static void smblib_reg_work(struct work_struct *work)
 					get_effective_result(chg->fv_votable),
 					get_effective_client(chg->fv_votable));
 
+<<<<<<< HEAD
 		smblib_dbg(chg, PR_OEM, "dc_suspend vote value is %d voted by %s\n",
 					get_effective_result(chg->dc_suspend_votable),
 					get_effective_client(chg->dc_suspend_votable));
@@ -3955,10 +4010,21 @@ static void smblib_reg_work(struct work_struct *work)
 		smblib_dbg(chg, PR_OEM, "qnovo_disable vote value is %d voted by %s\n",
 					get_effective_result(chg->qnovo_disable_votable),
 					get_effective_client(chg->qnovo_disable_votable));
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		power_supply_get_property(chg->usb_psy,
 					POWER_SUPPLY_PROP_INPUT_CURRENT_NOW,
 					&val);
 		usb_cur_in = val.intval;
+<<<<<<< HEAD
+=======
+
+		power_supply_get_property(chg->usb_psy,
+					POWER_SUPPLY_PROP_VOLTAGE_NOW,
+					&val);
+		usb_vol_in = val.intval;
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		power_supply_get_property(chg->usb_psy,
 					POWER_SUPPLY_PROP_CURRENT_MAX,
 					&val);
@@ -3999,7 +4065,12 @@ static void smblib_reg_work(struct work_struct *work)
 					 usb_vol_in, resistance, esr_uohms_nominal, esr_uohms_actual);
 		if (!chg->usb_main_psy) {
 			chg->usb_main_psy = power_supply_get_by_name("main");
+<<<<<<< HEAD
 		} else {
+=======
+		}
+		else {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			power_supply_get_property(chg->usb_main_psy,
 					POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED,
 					&val);
@@ -4695,8 +4766,12 @@ static int smblib_set_sw_conn_therm_regulation(struct smb_charger *chg,
 
 	if (enable) {
 		chg->entry_time = ktime_get();
+<<<<<<< HEAD
 		schedule_delayed_work(&chg->conn_therm_work,
 				msecs_to_jiffies(THERM_REG_RECHECK_DELAY_1S));
+=======
+		schedule_delayed_work(&chg->conn_therm_work,0);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	} else {
 		if (chg->thermal_status != TEMP_ABOVE_RANGE)
 			cancel_delayed_work(&chg->conn_therm_work);
@@ -4707,7 +4782,11 @@ static int smblib_set_sw_conn_therm_regulation(struct smb_charger *chg,
 
 #define AFTER_RAISE_VBUS_CHECK_DELAY_US		300000 /* 300 msec */
 #define AFTER_DETCH_CHECK_DELAY_US		650000 /* 65 msec */
+<<<<<<< HEAD
 #define FAKE_PLUG_OUT_CHECK_DELAY_MS		900 /* 900 Msec */
+=======
+#define FAKE_PLUG_OUT_CHECK_DELAY_MS		700 /* 900 Msec */
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 static void smblib_plugin_check_time_work(struct work_struct *work)
 {
 	struct smb_charger *chg = container_of(work, struct smb_charger,
@@ -4750,8 +4829,21 @@ static void smblib_fake_plug_out_check_work(struct work_struct *work)
 {
 	struct smb_charger *chg = container_of(work, struct smb_charger,
 						fake_plug_out_check_work.work);
+<<<<<<< HEAD
 
 	chg->fake_plug_out = false;
+=======
+	union power_supply_propval pval = {0, };
+	int rc;
+
+	chg->fake_plug_out = false;
+
+	rc = smblib_get_prop_usb_present(chg, &pval);
+	if (!pval.intval) {
+		chg->real_charger_type = POWER_SUPPLY_TYPE_UNKNOWN;
+		smblib_dbg(chg, PR_OEM, "%s clean real_charger_type \n", __func__);
+	}
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	power_supply_changed(chg->usb_psy);
 	smblib_dbg(chg, PR_OEM, "%s  clean fake_plug_out \n", __func__);
 }
@@ -4892,7 +4984,11 @@ static void smblib_conn_therm_work(struct work_struct *work)
 
 	if (chg->fake_conn_temp != 0)
 		chg->connector_temp = chg->fake_conn_temp;
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (chg->connector_temp >=  CONNECTOR_THERM_TOO_HIG) {
 		smblib_dbg(chg, PR_OEM, "chg->connector_temp:%d is too hig\n", chg->connector_temp);
 		thermal_status = TEMP_ABOVE_RANGE;
@@ -4910,7 +5006,11 @@ static void smblib_conn_therm_work(struct work_struct *work)
 		wdog_timeout = THERM_REG_RECHECK_DELAY_10S;
 	}
 
+<<<<<<< HEAD
 	//smblib_dbg(chg, PR_OEM,"CONN TEMP thermal_status=%d, chip->thermal_status=%d, connect_temp= %d\n",
+=======
+	//smblib_err(chg,"huangrui add CONN TEMP thermal_status=%d, chip->thermal_status=%d, connect_temp= %d\n",
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 					//	thermal_status, chg->thermal_status, chg->connector_temp);
 
 	if (thermal_status != chg->thermal_status) {
@@ -4937,7 +5037,11 @@ static void smblib_conn_therm_work(struct work_struct *work)
 					if(!rc)
 						cp_slave_enabled = val.intval;
 	}
+<<<<<<< HEAD
 				smblib_err(chg, "connect temp is too hot, cp_enable:%d, cp_sec_enable：%d，retry_count:%d\n",
+=======
+				smblib_err(chg, "connect temp is too hot,cp_enable:%d,cp_sec_enable:%d,etry_count:%d\n",
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 						cp_master_enabled,cp_slave_enabled,retry_count);
 
 				if (!cp_master_enabled && !cp_slave_enabled)
@@ -4946,7 +5050,11 @@ static void smblib_conn_therm_work(struct work_struct *work)
 				retry_count--;
 			}
 
+<<<<<<< HEAD
 			msleep(500);
+=======
+			//msleep(500);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 			if (chg->sink_src_mode == SRC_MODE)
 				smblib_vbus_regulator_disable(chg->vbus_vreg->rdev);
@@ -4957,16 +5065,33 @@ static void smblib_conn_therm_work(struct work_struct *work)
 						chg->sink_src_mode);
 			smblib_err(chg, "vbus_temp[%d-%d-%d-%d]\n", chg->connector_temp, chg->skin_temp, chg->smb_temp, chg->die_temp);
 
+<<<<<<< HEAD
 			val.intval = 0;
 			power_supply_set_property(chg->batt_psy,POWER_SUPPLY_PROP_INPUT_SUSPEND,&val);
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			/*rc = smblib_set_prop_input_suspend(chg, &val);
 			if (rc < 0)
 				smblib_err(chg,"Failed to set suspend\n");*/
 
+<<<<<<< HEAD
 			if (chg->sink_src_mode == SRC_MODE)
 				smblib_vbus_regulator_enable(chg->vbus_vreg->rdev);
 			else
 				smblib_set_vbus_disable(chg, false);
+=======
+			if (chg->sink_src_mode == SRC_MODE) {
+				smblib_set_vbus_disable(chg, false);
+				msleep(500);
+				smblib_vbus_regulator_enable(chg->vbus_vreg->rdev);
+			} else {
+				smblib_set_vbus_disable(chg, false);
+				msleep(500);
+			}
+			val.intval = 0;
+			power_supply_set_property(chg->batt_psy,POWER_SUPPLY_PROP_INPUT_SUSPEND,&val);
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		}
 		power_supply_changed(chg->usb_psy);
 	}
@@ -7756,7 +7881,11 @@ irqreturn_t chg_state_change_irq_handler(int irq, void *data)
 		schedule_delayed_work(&chg->wireless_full_delay_work,
 				msecs_to_jiffies(WIRELESS_DELAY_WAKE_MS));
 	}
+<<<<<<< HEAD
 	chg->uusb_apsd_rerun_done = false;
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	power_supply_changed(chg->batt_psy);
 	return IRQ_HANDLED;
 }
@@ -7801,10 +7930,77 @@ irqreturn_t usbin_uv_irq_handler(int irq, void *data)
 	struct storm_watch *wdata;
 	const struct apsd_result *apsd = smblib_get_apsd_result(chg);
 	int rc;
+<<<<<<< HEAD
 	u8 stat = 0, max_pulses = 0;
 
 	smblib_dbg(chg, PR_OEM, "IRQ: %s\n", irq_data->name);
 
+=======
+	u8 stat = 0, max_pulses = 0,debug = 0;
+	union power_supply_propval pval = {0,};
+
+	smblib_dbg(chg, PR_OEM, "IRQ: %s\n", irq_data->name);
+
+	if (chg->usb_psy) {
+		rc = power_supply_get_property(chg->usb_psy,
+					POWER_SUPPLY_PROP_VOLTAGE_NOW, &pval);
+		if (rc < 0) {
+			smblib_err(chg, "Couldn't get VBUS voltage rc=%d\n", rc);
+		}
+	}
+
+	smblib_err(chg, " VBUS voltage rc=%d\n", pval.intval);
+
+	rc = smblib_read(chg, 0x1306, &debug);
+	if (rc < 0)
+		smblib_err(chg,
+			"Couldn't read 0x1306 rc=%d\n", rc);
+
+	smblib_err(chg,"0x1306 is 0x%02X\n", debug);
+
+	rc = smblib_read(chg, 0x1309, &debug);
+	if (rc < 0)
+		smblib_err(chg,
+			"Couldn't read 0x1309 rc=%d\n", rc);
+
+	smblib_err(chg,"0x1309 is 0x%02X\n", debug);
+
+	rc = smblib_read(chg, 0x1344, &debug);
+	if (rc < 0)
+		smblib_err(chg,
+			"Couldn't read 0x1344 rc=%d\n", rc);
+
+	smblib_err(chg,"0x1344 is 0x%02X\n", debug);
+
+	rc = smblib_read(chg, 0x1381, &debug);
+	if (rc < 0)
+		smblib_err(chg,
+			"Couldn't read 0x1381 rc=%d\n", rc);
+
+	smblib_err(chg,"0x1381 is 0x%02X\n", debug);
+
+	rc = smblib_read(chg, 0x1382, &debug);
+	if (rc < 0)
+		smblib_err(chg,
+			"Couldn't read 0x1382 rc=%d\n", rc);
+
+	smblib_err(chg,"0x1382 is 0x%02X\n", debug);
+
+	rc = smblib_read(chg, 0x1383, &debug);
+	if (rc < 0)
+		smblib_err(chg,
+			"Couldn't read 0x1383 rc=%d\n", rc);
+
+	smblib_err(chg,"0x1383 is 0x%02X\n", debug);
+
+	rc = smblib_read(chg, 0x1384, &debug);
+	if (rc < 0)
+		smblib_err(chg,
+			"Couldn't read 0x1384 rc=%d\n", rc);
+
+	smblib_err(chg,"0x1384 is 0x%02X\n", debug);
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if ((chg->wa_flags & WEAK_ADAPTER_WA)
 			&& is_storming(&irq_data->storm_data)) {
 
@@ -8465,6 +8661,12 @@ void smblib_usb_plugin_locked(struct smb_charger *chg)
 		cancel_delayed_work_sync(&chg->charger_type_recheck);
 		flush_delayed_work(&chg->after_ffc_chg_dis_work);
 		cancel_delayed_work(&chg->after_ffc_chg_en_work);
+<<<<<<< HEAD
+=======
+		cancel_delayed_work(&chg->slow_pd_wa_work);
+		chg->hvdcp_det_lock = false;
+		__pm_relax(&chg->slow_pd_wa_wakelock);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		if (chg->cc_un_compliant_detected) {
 			smblib_hvdcp_detect_enable(chg, false);
 			chg->cc_un_compliant_detected = false;
@@ -8831,10 +9033,17 @@ static void smblib_raise_qc3_vbus_work(struct work_struct *work)
 		vbus_now = val.intval;
 		pr_info("vbus_now is %d\n", vbus_now);
 		if (chg->snk_debug_acc_detected && usb_present)
+<<<<<<< HEAD
 			vol_qc_ab_thr = VOL_THR_FOR_QC_CLASS_AB
 							+ COMP_FOR_LOW_RESISTANCE_CABLE;
 		else
 			vol_qc_ab_thr = VOL_THR_FOR_QC_CLASS_AB;
+=======
+			vol_qc_ab_thr = VOL_THR_FOR_QC_CLASS_AB_MUNCH
+							+ COMP_FOR_LOW_RESISTANCE_CABLE;
+		else
+			vol_qc_ab_thr = VOL_THR_FOR_QC_CLASS_AB_MUNCH;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		if (vbus_now <= vol_qc_ab_thr) {
 			pr_info("qc_class_a charger is detected\n");
 			chg->is_qc_class_a = true;
@@ -8896,6 +9105,10 @@ struct quick_charge adapter_cap[11] = {
 	{0, 0},
 };
 
+<<<<<<< HEAD
+=======
+#define WIRE_SUPER_POWER_MAX		50
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 #define ADAPTER_PWR_NONE              0x0
 #define ADAPTER_XIAOMI_QC3_PWR_20W    0x9
 #define ADAPTER_XIAOMI_PD_PWR_20W     0xa
@@ -8908,6 +9121,12 @@ int smblib_get_quick_charge_type(struct smb_charger *chg)
 {
 	int i = 0, rc;
 	int tx_adapter = 0, wls_online = 0;
+<<<<<<< HEAD
+=======
+	int power_max = 0;
+	int quick_charge_type = 0;
+	static bool update = false;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	union power_supply_propval pval = {0, };
 
 	if (!chg) {
@@ -8923,11 +9142,32 @@ int smblib_get_quick_charge_type(struct smb_charger *chg)
 		pr_info("battery temp is under 0 or above 58\n");
 		return 0;
 	}
+<<<<<<< HEAD
 
 	if ((chg->real_charger_type == POWER_SUPPLY_TYPE_USB_PD) && chg->pd_verifed) {
 		return QUICK_CHARGE_TURBE;
 	}
 
+=======
+	//dev_err(chg->dev, "huangrui add chg->real_charger_type:%d,chg->pd_verifed:%d\n",chg->real_charger_type,chg->pd_verifed);
+	if ((chg->real_charger_type == POWER_SUPPLY_TYPE_USB_PD) && chg->pd_verifed) {
+		power_max = smblib_get_adapter_power_max(chg);
+		if (power_max >= WIRE_SUPER_POWER_MAX)
+			quick_charge_type = QUICK_CHARGE_SUPER;
+		else
+			quick_charge_type = QUICK_CHARGE_TURBE;
+
+		if (chg->usb_psy && !update) {
+			power_supply_changed(chg->usb_psy);
+			update = true;
+		}
+
+		return quick_charge_type;
+	}
+
+	update = false;
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (chg->is_qc_class_b || chg->real_charger_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
 		return QUICK_CHARGE_FLASH;
 
@@ -8943,12 +9183,30 @@ int smblib_get_quick_charge_type(struct smb_charger *chg)
 		wls_online = pval.intval;
 
 		if (wls_online) {
+<<<<<<< HEAD
 			if (tx_adapter >= ADAPTER_XIAOMI_QC3_PWR_20W)
 				return QUICK_CHARGE_TURBE;
 			else if (tx_adapter > ADAPTER_PWR_NONE)
 				return QUICK_CHARGE_NORMAL;
 			else
 				return 0;
+=======
+			switch(tx_adapter)
+			{
+				case ADAPTER_NONE:
+					break;
+				case ADAPTER_XIAOMI_QC3_PWR_20W:
+				case ADAPTER_XIAOMI_PD_PWR_20W:
+				case ADAPTER_XIAOMI_CAR_PWR_20W:
+				case ADAPTER_XIAOMI_PD_PWR_30W:
+				case ADAPTER_VOICE_BOX_PWR_30W:
+				case ADAPTER_XIAOMI_PD_PWR_50W:
+				case ADAPTER_XIAOMI_PD_PWR_60W:
+					return QUICK_CHARGE_TURBE;
+				default:
+					return QUICK_CHARGE_NORMAL;
+			}
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		}
 	}
 
@@ -8968,12 +9226,16 @@ int smblib_get_quick_charge_type(struct smb_charger *chg)
 int smblib_get_adapter_power_max(struct smb_charger *chg)
 {
 	int rc;
+<<<<<<< HEAD
 	int wireless_power_good_en = 0;
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	int tx_adapter = 0;
 	int usb_present = 0;
 	int apdo_max = 0;
 	union power_supply_propval pval = {0, };
 
+<<<<<<< HEAD
 	if (chg->wls_psy) {
 		rc = power_supply_get_property(chg->wls_psy,
 				POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &pval);
@@ -9011,12 +9273,62 @@ int smblib_get_adapter_power_max(struct smb_charger *chg)
 		}
 		usb_present = pval.intval;
 
+=======
+	if (chg->usb_psy) {
+		rc = power_supply_get_property(chg->usb_psy, POWER_SUPPLY_PROP_ONLINE, &pval);
+		if (rc < 0) {
+			dev_err(chg->dev, "get usb online status failed, rc=%d\n", rc);
+			return 0;
+		}
+
+		usb_present = pval.intval;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		if (usb_present) {
 			rc = power_supply_get_property(chg->usb_psy,
 						POWER_SUPPLY_PROP_APDO_MAX, &pval);
 			apdo_max = pval.intval;
+<<<<<<< HEAD
 			/*pr_info("apdo_max:%d\n", apdo_max);*/
 			return apdo_max;
+=======
+			//dev_err(chg->dev, "huangrui add apdo max:%d\n", apdo_max);
+
+			if (apdo_max == 65)
+				return APDO_MAX_65W; /* only for J1 65W adapter */
+			else if (apdo_max >= 60)
+				return APDO_MAX_67W;
+			else if (apdo_max >= 55 && apdo_max < 60)
+				return APDO_MAX_55W;
+			else if (apdo_max >= 50 && apdo_max < 55)
+				return APDO_MAX_50W;
+			else
+				return apdo_max;
+		}
+	}
+
+	if (chg->wls_psy) {
+		rc = power_supply_get_property(chg->wls_psy, POWER_SUPPLY_PROP_TX_ADAPTER, &pval);
+		if (rc < 0) {
+			dev_err(chg->dev, "get usb online status failed, rc=%d\n", rc);
+			return 0;
+		}
+
+		tx_adapter = pval.intval;
+		pr_info("tx_adapter:%d\n", tx_adapter);
+
+		switch (tx_adapter)
+		{
+			case ADAPTER_XIAOMI_PD_PWR_30W:
+			case ADAPTER_VOICE_BOX_PWR_30W:
+			case ADAPTER_XIAOMI_PD_PWR_50W:
+			case ADAPTER_XIAOMI_PD_PWR_60W:
+				return	WLS_POWER_30W;
+			case ADAPTER_XIAOMI_QC3_PWR_20W:
+			case ADAPTER_XIAOMI_PD_PWR_20W:
+				return WLS_POWER_20W;
+			default:
+				return 0;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		}
 	}
 
@@ -9190,6 +9502,14 @@ static void update_sw_icl_max(struct smb_charger *chg, int pst)
 			|| pst == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
 		return;
 
+<<<<<<< HEAD
+=======
+	if (chg->mtbf_current >= 1500) {
+		pst = POWER_SUPPLY_TYPE_USB_CDP;
+		smblib_err(chg, "mtbf test and force the type to CDP!\n");
+	}
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	/* rp-std or legacy, USB BC 1.2 */
 	switch (pst) {
 	case POWER_SUPPLY_TYPE_USB:
@@ -9209,6 +9529,13 @@ static void update_sw_icl_max(struct smb_charger *chg, int pst)
 			vote(chg->usb_icl_votable, SW_ICL_MAX_VOTER, false, 0);
 		break;
 	case POWER_SUPPLY_TYPE_USB_CDP:
+<<<<<<< HEAD
+=======
+		if (chg->mtbf_current >= 1500 && is_client_vote_enabled(chg->usb_icl_votable,
+						USB_PSY_VOTER))
+			vote(chg->usb_icl_votable, USB_PSY_VOTER, false, 0);
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		vote(chg->usb_icl_votable, SW_ICL_MAX_VOTER, true,
 					CDP_CURRENT_UA);
 		break;
@@ -9256,15 +9583,55 @@ static void determine_thermal_current(struct smb_charger *chg)
 	}
 }
 
+<<<<<<< HEAD
 static void smblib_handle_apsd_done(struct smb_charger *chg, bool rising)
 {
 	const struct apsd_result *apsd_result;
+=======
+
+static void smblib_slow_pd_wa(struct work_struct *work)
+{
+	struct smb_charger *chg = container_of(work, struct smb_charger, slow_pd_wa_work.work);
+
+	smblib_err(chg,"slow pd wa work enter\n");
+	if (chg->real_charger_type == POWER_SUPPLY_TYPE_USB_DCP) {
+		smblib_hvdcp_detect_enable(chg, true);
+		smblib_err(chg,"check slow PD workaround\n");
+		smblib_rerun_apsd(chg);
+		chg->hvdcp_det_lock = false;
+	}
+
+	__pm_relax(&chg->slow_pd_wa_wakelock);
+	return;
+}
+
+#define QC_WAIT_PD_CONN_TIME_S		20
+static void smblib_handle_apsd_done(struct smb_charger *chg, bool rising)
+{
+	const struct apsd_result *apsd_result;
+	struct timespec time;
+	int recheck_time = 0;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	if (!rising)
 		return;
 
 	apsd_result = smblib_update_usb_type(chg);
 
+<<<<<<< HEAD
+=======
+	get_monotonic_boottime(&time);
+	if (time.tv_sec < QC_WAIT_PD_CONN_TIME_S && apsd_result->pst == POWER_SUPPLY_TYPE_USB_DCP && chg->hvdcp_det_lock == false) {
+		if (!chg->slow_pd_wa_wakelock.active) {
+			__pm_stay_awake(&chg->slow_pd_wa_wakelock);
+			chg->hvdcp_det_lock = true;
+			smblib_err(chg, "boot_time %ld, wait pd update status\n", time.tv_sec);
+			smblib_hvdcp_detect_enable(chg, false);
+			recheck_time = (QC_WAIT_PD_CONN_TIME_S - time.tv_sec) * 1000;
+		}
+	}
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	update_sw_icl_max(chg, apsd_result->pst);
 
 	switch (apsd_result->bit) {
@@ -9282,6 +9649,15 @@ static void smblib_handle_apsd_done(struct smb_charger *chg, bool rising)
 	}
 
 	determine_thermal_current(chg);
+<<<<<<< HEAD
+=======
+
+	if(chg->hvdcp_det_lock) {
+		schedule_delayed_work(&chg->slow_pd_wa_work, msecs_to_jiffies(recheck_time));
+		//chg->hvdcp_det_lock = false;
+	}
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	smblib_dbg(chg, PR_INTERRUPT, "IRQ: apsd-done rising; %s detected\n",
 		   apsd_result->name);
 }
@@ -9300,6 +9676,12 @@ irqreturn_t usb_source_change_irq_handler(int irq, void *data)
 	if (chg->pd_active)
 		return IRQ_HANDLED;
 
+<<<<<<< HEAD
+=======
+	if (chg->hvdcp_det_lock == true)
+		return IRQ_HANDLED;
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	rc = smblib_read(chg, APSD_STATUS_REG, &stat);
 	if (rc < 0) {
 		smblib_err(chg, "Couldn't read APSD_STATUS rc=%d\n", rc);
@@ -9465,6 +9847,10 @@ static void typec_src_fault_condition_cfg(struct smb_charger *chg, bool src)
 static void typec_sink_insertion(struct smb_charger *chg)
 {
 	int rc;
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	/* always close q1 to prevent reverse current */
 	if (chg->wireless_bq) {
 		smblib_dc_chg_q1_enable(chg, true);
@@ -9710,6 +10096,12 @@ static void typec_sink_removal(struct smb_charger *chg)
 			smblib_notify_usb_host(chg, false);
 		chg->otg_present = false;
 	}
+<<<<<<< HEAD
+=======
+
+	chg->thermal_status = TEMP_BELOW_RANGE;
+	cancel_delayed_work(&chg->conn_therm_work);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 }
 
 static void typec_src_removal(struct smb_charger *chg)
@@ -9772,7 +10164,11 @@ static void typec_src_removal(struct smb_charger *chg)
 	vote(chg->usb_icl_votable, LPD_VOTER, false, 0);
 	vote(chg->usb_icl_votable, QC2_UNSUPPORTED_VOTER, false, 0);
 	vote(chg->usb_icl_votable, QC3P5_VOTER, false, 0);
+<<<<<<< HEAD
 
+=======
+	vote(chg->fcc_votable, NON_PPS_PD_FCC_VOTER, false, 0);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	/* reset usb irq voters */
 	vote(chg->limited_irq_disable_votable, CHARGER_TYPE_VOTER,
 			true, 0);
@@ -9915,6 +10311,11 @@ static void typec_src_removal(struct smb_charger *chg)
 	chg->cc_un_compliant_detected = false;
 	chg->report_input_absent = false;
 	chg->qc3_raise_done = false;
+<<<<<<< HEAD
+=======
+	chg->thermal_remove = false;
+	chg->enable_bypass = 1;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	if (chg->pd_verifed) {
 		chg->pd_verifed = false;
@@ -12502,6 +12903,12 @@ int smblib_init(struct smb_charger *chg)
 	INIT_DELAYED_WORK(&chg->cc_un_compliant_charge_work, smblib_cc_un_compliant_charge_work);
 	INIT_DELAYED_WORK(&chg->clean_cp_to_sw_work, smblib_clean_cp_to_sw_work);
 	INIT_DELAYED_WORK(&chg->check_init_boot, smb_check_init_boot);
+<<<<<<< HEAD
+=======
+	INIT_DELAYED_WORK(&chg->slow_pd_wa_work, smblib_slow_pd_wa);
+	wakeup_source_add(&chg->slow_pd_wa_wakelock);
+	chg->hvdcp_det_lock = false;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	if (chg->wa_flags & CHG_TERMINATION_WA) {
 		INIT_WORK(&chg->chg_termination_work,
@@ -12720,3 +13127,7 @@ static int __init early_parse_off_charge_flag(char *p)
 	return 0;
 }
 early_param("androidboot.mode", early_parse_off_charge_flag);
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")

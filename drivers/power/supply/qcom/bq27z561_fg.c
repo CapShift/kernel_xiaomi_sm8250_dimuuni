@@ -928,6 +928,10 @@ static int fg_read_system_soc(struct bq_fg_chip *bq)
 
 	soc = bq_battery_soc_smooth_tracking(bq, raw_soc, soc, temp, curr);
 	bq->last_soc = soc;
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	return soc;
 }
 
@@ -1180,6 +1184,7 @@ static int fg_read_charging_voltage(struct bq_fg_chip *bq)
 	return cv;
 }
 
+<<<<<<< HEAD
 static int fg_get_temp_max_fac(struct bq_fg_chip *bq)
 {
 	char data_limetime1[32];
@@ -1233,6 +1238,8 @@ static int fg_get_time_ot(struct bq_fg_chip *bq)
 	return val;
 }
 
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 static int fg_get_batt_status(struct bq_fg_chip *bq)
 {
 
@@ -1399,9 +1406,12 @@ static enum power_supply_property fg_props[] = {
 	POWER_SUPPLY_PROP_RECHARGE_VBAT,
 	POWER_SUPPLY_PROP_MODEL_NAME,
 	POWER_SUPPLY_PROP_SOH,
+<<<<<<< HEAD
 	// high temperature to intercept
 	POWER_SUPPLY_PROP_TEMP_MAX_FAC,
 	POWER_SUPPLY_PROP_TIME_OT,
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 };
 
 #define SHUTDOWN_DELAY_VOL	3300
@@ -1613,10 +1623,17 @@ static int fg_get_property(struct power_supply *psy, enum power_supply_property 
 		val->intval = fg_read_charging_voltage(bq);
 		bq_dbg(PR_DEBUG, "fg_read_gauge_voltage_max: %d\n", val->intval);
 		if (val->intval == BQ_MAXIUM_VOLTAGE_FOR_CELL) {
+<<<<<<< HEAD
 #if (defined CONFIG_DUAL_FUEL_GAUGE_BQ27Z561)
 			if (bq->batt_volt > BQ_MAXIUM_VOLTAGE_FOR_CELL + VOLTAGE_FOR_CELL_HYS) {
 #else
 			if (bq->batt_volt > BQ_PACK_MAXIUM_VOLTAGE_FOR_PMIC_SAFETY) {
+=======
+#ifndef CONFIG_DUAL_FUEL_GAUGE_BQ27Z561
+			if (bq->batt_volt > BQ_PACK_MAXIUM_VOLTAGE_FOR_PMIC_SAFETY) {
+#else
+			if (bq->batt_volt > BQ_MAXIUM_VOLTAGE_FOR_CELL + VOLTAGE_FOR_CELL_HYS) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 #endif
 				ov_count[bq->fg_index]++;
 				if (ov_count[bq->fg_index] > 4) {
@@ -1631,8 +1648,12 @@ static int fg_get_property(struct power_supply *psy, enum power_supply_property 
 
 			val->intval = BQ_PACK_MAXIUM_VOLTAGE_FOR_PMIC - bq->cell_ov_check * 10;
 			bq_dbg(PR_DEBUG, "prop_voltage_max: %d\n", val->intval);
+<<<<<<< HEAD
 #if (defined CONFIG_DUAL_FUEL_GAUGE_BQ27Z561)
 #else
+=======
+#ifndef CONFIG_DUAL_FUEL_GAUGE_BQ27Z561
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			if ((bq->batt_soc == 100) && (val->intval == BQ_PACK_MAXIUM_VOLTAGE_FOR_PMIC))
 				val->intval = BQ_MAXIUM_VOLTAGE_FOR_CELL;
 #endif
@@ -1680,7 +1701,11 @@ static int fg_get_property(struct power_supply *psy, enum power_supply_property 
 		break;
 	case POWER_SUPPLY_PROP_FFC_TERMINATION_CURRENT:
 		val->intval = manu_info[FFC_TERMINATION].data * 90 / 100;
+<<<<<<< HEAD
 #if (defined CONFIG_DUAL_FUEL_GAUGE_BQ27Z561)
+=======
+#ifdef CONFIG_DUAL_FUEL_GAUGE_BQ27Z561
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		val->intval = DUAL_BQ27Z561_FFC_TERM;
 #endif
 		val->intval = val->intval * (-1);
@@ -1694,12 +1719,15 @@ static int fg_get_property(struct power_supply *psy, enum power_supply_property 
 	case POWER_SUPPLY_PROP_SOH:
 		val->intval = fg_read_soh(bq);
 		break;
+<<<<<<< HEAD
 	case POWER_SUPPLY_PROP_TEMP_MAX_FAC:
 		val->intval = fg_get_temp_max_fac(bq);
 		break;
 	case POWER_SUPPLY_PROP_TIME_OT:
 		val->intval = fg_get_time_ot(bq);
 		break;
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	default:
 		return -EINVAL;
 	}
@@ -1725,7 +1753,11 @@ static int fg_set_property(struct power_supply *psy,
 		break;
 	case POWER_SUPPLY_PROP_AUTHENTIC:
 		bq->verify_digest_success = !!val->intval;
+<<<<<<< HEAD
 #if (defined CONFIG_DUAL_FUEL_GAUGE_BQ27Z561)
+=======
+#ifndef CONFIG_DUAL_FUEL_GAUGE_BQ27Z561
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		if (!bq->fcc_votable)
 			bq->fcc_votable = find_votable("FCC");
 		vote(bq->fcc_votable, BMS_FG_VERIFY, !bq->verify_digest_success,
@@ -2384,8 +2416,12 @@ static int fg_update_charge_full(struct bq_fg_chip *bq)
 
 	if ((bq->raw_soc <= BQ_RECHARGE_SOC) && bq->charge_done && bq->health != POWER_SUPPLY_HEALTH_WARM) {
 		prop.intval = true;
+<<<<<<< HEAD
 #if (defined CONFIG_DUAL_FUEL_GAUGE_BQ27Z561)
 #else
+=======
+#ifndef CONFIG_DUAL_FUEL_GAUGE_BQ27Z561
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		rc = power_supply_set_property(bq->batt_psy,
 				POWER_SUPPLY_PROP_FORCE_RECHARGE, &prop);
 		if (rc < 0) {
@@ -2777,7 +2813,11 @@ static int bq_fg_probe(struct i2c_client *client,
 	bq->fake_temp	= -EINVAL;
 	bq->fake_volt	= -EINVAL;
 	bq->fake_chip_ok = -EINVAL;
+<<<<<<< HEAD
 #if (defined CONFIG_DUAL_FUEL_GAUGE_BQ27Z561)
+=======
+#ifdef CONFIG_DUAL_FUEL_GAUGE_BQ27Z561
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	FG_REPORT_FULL_SOC = FG_REPORT_FULL_SOC_DEVICE;
 #else
 	FG_REPORT_FULL_SOC = FG_REPORT_FULL_SOC_PHONE;

@@ -502,8 +502,10 @@ static int get_val(struct range_data *range, int hysteresis, int current_index,
 	 * If the threshold is lesser than the minimum allowed range,
 	 * return -ENODATA.
 	 */
-	if (threshold < range[0].low_threshold)
+	if (threshold < range[0].low_threshold) {
+		pr_err("threshold is low then %d, error!\n", range[0].low_threshold);
 		return -ENODATA;
+	}
 
 	/* First try to find the matching index without hysteresis */
 	for (i = 0; i < MAX_STEP_CHG_ENTRIES; i++) {
@@ -699,7 +701,7 @@ static int handle_step_chg_config(struct step_chg_info *chip)
 		vote(chip->fcc_votable, STEP_CHG_VOTER, true, fcc_ua);
 	}
 
-	pr_debug("%s = %d Step-FCC = %duA taper-fcc: %d\n",
+	pr_info("%s = %d Step-FCC = %duA taper-fcc: %d\n",
 		chip->step_chg_config->param.prop_name, pval.intval,
 		get_client_vote(chip->fcc_votable, STEP_CHG_VOTER),
 		chip->taper_fcc);
@@ -968,6 +970,8 @@ static int handle_jeita(struct step_chg_info *chip)
 	 */
 	rc = power_supply_get_property(chip->batt_psy,
 				POWER_SUPPLY_PROP_VOLTAGE_MAX, &pval);
+	pr_info("%s = %d FCC = %duA FV = %duV %s = %d max voltage= %duv battery warm = %d battery cool = %d\n",
+		chip->jeita_fcc_config->param.prop_name, temp, fcc_ua, fv_uv, chip->jeita_fcc_config->param.prop_name, temp, pval.intval, chip->jeita_warm_th, chip->jeita_cool_th);
 	if (rc || (pval.intval == fv_uv)) {
 		vote(chip->usb_icl_votable, JEITA_VOTER, false, 0);
 		goto set_jeita_fv;

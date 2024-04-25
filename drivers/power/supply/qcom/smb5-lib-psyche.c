@@ -1873,7 +1873,11 @@ static int set_sdp_current(struct smb_charger *chg, int icl_ua)
 	return rc;
 }
 
+<<<<<<< HEAD
 #define CLEAN_CP_TO_SW_DELAY_MS 1000
+=======
+#define CLEAN_CP_TO_SW_DELAY_MS 500
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 int smblib_set_icl_current(struct smb_charger *chg, int icl_ua)
 {
 	int rc = 0;
@@ -1894,7 +1898,11 @@ int smblib_set_icl_current(struct smb_charger *chg, int icl_ua)
 			    POWER_SUPPLY_TYPEC_SINK_DEBUG_ACCESSORY)
 		return 0;
 
+<<<<<<< HEAD
 	if (pre_icl == 0 && icl_ua >= 900000) {
+=======
+	if (pre_icl == 0 && icl_ua >= 1500000) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		chg->cp_to_sw_status = true;
 		schedule_delayed_work(&chg->clean_cp_to_sw_work,
 				msecs_to_jiffies(CLEAN_CP_TO_SW_DELAY_MS));
@@ -2498,7 +2506,11 @@ static void smblib_check_input_status(struct smb_charger *chg)
 	if ((input_present & INPUT_PRESENT_DC
 			|| input_present & INPUT_PRESENT_USB)
 				&& !off_charge_flag
+<<<<<<< HEAD
 				&& (vbat_uv <= (CUTOFF_VOL_THR - 200))) {
+=======
+				&& (vbat_uv <= CUTOFF_VOL_THR)) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		chg->report_input_absent = true;
 		power_supply_changed(chg->batt_psy);
 	}
@@ -11336,6 +11348,7 @@ static int smblib_dynamic_recharge_vbat(struct smb_charger *chg)
 	} else
 		return 0;
 
+<<<<<<< HEAD
 	if (chg->batt_psy) {
 		rc = power_supply_set_property(chg->batt_psy,
 				POWER_SUPPLY_PROP_RECHARGE_VBAT,
@@ -11345,6 +11358,15 @@ static int smblib_dynamic_recharge_vbat(struct smb_charger *chg)
 					rc);
 			return -EINVAL;
 		}
+=======
+	rc = power_supply_set_property(chg->batt_psy,
+			POWER_SUPPLY_PROP_RECHARGE_VBAT,
+			&val);
+	if (rc < 0) {
+		dev_err(chg->dev, "Couldn't set POWER_SUPPLY_PROP_CHARGER_TEMP_MAX rc=%d\n",
+				rc);
+		return -EINVAL;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	}
 
 	return 0;

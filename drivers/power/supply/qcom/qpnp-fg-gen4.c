@@ -358,7 +358,11 @@ struct bias_config {
 	int	bias_kohms;
 };
 
-static int fg_gen4_debug_mask;
+static int fg_gen4_debug_mask = FG_STATUS | FG_FVSS | FG_POWER_SUPPLY;
+
+static bool is_batt_vendor_gyb;
+static bool is_batt_vendor_nvt;
+static bool is_low_temp_flag;
 
 static bool is_batt_vendor_gyb;
 static bool is_batt_vendor_nvt;
@@ -1092,6 +1096,10 @@ static int fg_gen4_get_prop_capacity_raw(struct fg_gen4_chip *chip, int *val)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 static int fg_gen4_get_prop_soc_decimal_rate(struct fg_gen4_chip *chip, int *val)
 {
 	struct fg_dev *fg = &chip->fg;
@@ -2437,6 +2445,7 @@ static bool is_profile_load_required(struct fg_gen4_chip *chip)
 			fg->profile_load_status = PROFILE_SKIPPED;
 			return false;
 		}
+
 		profiles_same = memcmp(chip->batt_profile, buf,
 					PROFILE_COMP_LEN) == 0;
 		if (profiles_same) {
@@ -2789,6 +2798,7 @@ done:
 	fg_notify_charger(fg);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	power_supply_changed(fg->fg_psy);
 	mod_delayed_work(system_freezable_power_efficient_wq, &chip->ttf->ttf_work, msecs_to_jiffies(10000));
 =======
@@ -2798,6 +2808,10 @@ done:
 >>>>>>> a1967433c52b (drivers: power: supply: Import Xiaomi drivers/changes)
 	schedule_delayed_work(&chip->ttf->ttf_work, msecs_to_jiffies(10000));
 >>>>>>> parent of 951b4184227d (power: supply: Import xiaomi modifications from munch-s-oss)
+=======
+	power_supply_changed(fg->fg_psy);
+	mod_delayed_work(system_freezable_power_efficient_wq, &chip->ttf->ttf_work, msecs_to_jiffies(10000));
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	fg_dbg(fg, FG_STATUS, "profile loaded successfully");
 out:
 	if (!chip->esr_fast_calib || is_debug_batt_id(fg)) {
@@ -3598,6 +3612,10 @@ static int fg_gen4_validate_soc_scale_mode(struct fg_gen4_chip *chip)
 		vbatt_scale_mv = 3400;
 	else
 		vbatt_scale_mv = chip->dt.vbatt_scale_thr_mv;
+<<<<<<< HEAD
+=======
+	pr_info("get vbatt_scale_mv = %d, current now = %d\n", vbatt_scale_mv, chip->current_now);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!chip->soc_scale_mode && fg->charge_status ==
 		POWER_SUPPLY_STATUS_DISCHARGING &&
 		chip->current_now  > 0 &&
@@ -4418,6 +4436,10 @@ static void soc_scale_work(struct work_struct *work)
 		if (delta_time < 0)
 			delta_time = 0;
 		soc_changed = min(1, delta_time);
+<<<<<<< HEAD
+=======
+		fg_dbg(fg, FG_FVSS, "get delta_time = %d, soc_changed =%d, time_since_last_change_sec = %d\n", delta_time, soc_changed, time_since_last_change_sec);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 		chip->soc_scale_msoc = chip->prev_soc_scale_msoc - soc_changed;
 		chip->scale_timer = chip->dt.scale_timer_ms /
@@ -5388,7 +5410,7 @@ static int fg_psy_get_property(struct power_supply *psy,
 		pval->intval = chip->dt.ffc_ki_coeff_med_hi_chg_thr_ma;
 		break;
 	default:
-		pr_err("unsupported property %d\n", psp);
+		pr_debug("unsupported property %d\n", psp);
 		rc = -EINVAL;
 		break;
 	}
@@ -7019,8 +7041,11 @@ static int fg_gen4_parse_dt(struct fg_gen4_chip *chip)
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a1967433c52b (drivers: power: supply: Import Xiaomi drivers/changes)
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 #define SCALE_SOC 3
 #define DETAL_SOC 1
 //#define FFC_SYS_TERMI_CURRENT -1280000
@@ -7301,10 +7326,13 @@ static void soc_monitor_work(struct work_struct *work)
 	}
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 951b4184227d (power: supply: Import xiaomi modifications from munch-s-oss)
 =======
 >>>>>>> a1967433c52b (drivers: power: supply: Import Xiaomi drivers/changes)
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 static void fg_gen4_cleanup(struct fg_gen4_chip *chip)
 {
 	struct fg_dev *fg = &chip->fg;
@@ -7497,6 +7525,10 @@ static int fg_gen4_probe(struct platform_device *pdev)
 	}
 
 	chip->hw_country = get_hw_country_version();
+<<<<<<< HEAD
+=======
+	dev_err(fg->dev, "hw_country: %d\n", chip->hw_country);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	rc = fg_gen4_parse_dt(chip);
 	if (rc < 0) {
@@ -7630,6 +7662,9 @@ static int fg_gen4_probe(struct platform_device *pdev)
 	fg_gen4_post_init(chip);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (chip->dt.fg_increase_100soc_time) {
         mod_delayed_work(system_freezable_power_efficient_wq, &fg->soc_monitor_work, msecs_to_jiffies(0));
 	} else {
@@ -7655,6 +7690,7 @@ static int fg_gen4_probe(struct platform_device *pdev)
 <<<<<<< HEAD
 		mod_delayed_work(system_freezable_power_efficient_wq, &fg->empty_restart_fg_work,
 				msecs_to_jiffies(RESTART_FG_START_WORK_MS));
+<<<<<<< HEAD
 =======
 
 >>>>>>> parent of 951b4184227d (power: supply: Import xiaomi modifications from munch-s-oss)
@@ -7662,6 +7698,8 @@ static int fg_gen4_probe(struct platform_device *pdev)
 		schedule_delayed_work(&fg->empty_restart_fg_work,
 				msecs_to_jiffies(RESTART_FG_START_WORK_MS));
 >>>>>>> a1967433c52b (drivers: power: supply: Import Xiaomi drivers/changes)
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	pr_debug("FG GEN4 driver probed successfully\n");
 	return 0;
 exit:

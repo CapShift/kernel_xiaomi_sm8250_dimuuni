@@ -31,7 +31,11 @@
  *
  */
 
+<<<<<<< HEAD
 #define pr_fmt(fmt) "[FC2-PM]: %s: " fmt, __func__
+=======
+#define pr_fmt(fmt)	"[FC2-PM]: %s: " fmt, __func__
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/slab.h>
@@ -59,6 +63,7 @@
 #define pr_debug pr_err
 #endif
 
+<<<<<<< HEAD
 #define BATT_MAX_CHG_VOLT 4400
 #define BATT_FAST_CHG_CURR 5400
 #define BUS_OVP_THRESHOLD 12000
@@ -76,6 +81,25 @@
 #define ADC_ERR 1
 #define CP_ENABLE_FAIL 2
 #define TAPER_DONE 1
+=======
+#define BATT_MAX_CHG_VOLT		4400
+#define BATT_FAST_CHG_CURR		5400
+#define	BUS_OVP_THRESHOLD		12000
+#define	BUS_OVP_ALARM_THRESHOLD		9500
+
+#define BUS_VOLT_INIT_UP		400
+
+#define BAT_VOLT_LOOP_LMT		BATT_MAX_CHG_VOLT
+#define BAT_CURR_LOOP_LMT		BATT_FAST_CHG_CURR
+#define BUS_VOLT_LOOP_LMT		BUS_OVP_THRESHOLD
+
+#define VOLT_UP		true
+#define VOLT_DOWN	false
+
+#define ADC_ERR			1
+#define CP_ENABLE_FAIL			2
+#define TAPER_DONE			1
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 enum {
 	VBUS_ERROR_NONE,
@@ -84,16 +108,24 @@ enum {
 };
 
 static struct sys_config sys_config = {
+<<<<<<< HEAD
 	.bat_volt_lp_lmt = BAT_VOLT_LOOP_LMT,
 	.bat_curr_lp_lmt = BAT_CURR_LOOP_LMT /* + 1000*/,
 	.bus_volt_lp_lmt = BUS_VOLT_LOOP_LMT,
 	.bus_curr_lp_lmt = BAT_CURR_LOOP_LMT >> 1,
+=======
+	.bat_volt_lp_lmt		= BAT_VOLT_LOOP_LMT,
+	.bat_curr_lp_lmt		= BAT_CURR_LOOP_LMT/* + 1000*/,
+	.bus_volt_lp_lmt		= BUS_VOLT_LOOP_LMT,
+	.bus_curr_lp_lmt		= BAT_CURR_LOOP_LMT >> 1,
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	.ibus_minus_deviation_val = HVDCP3_IBUS_MINUS_DEV_VAL,
 	.ibus_plus_deviation_val = HVDCP3_IBUS_PLUS_DEV_VAL,
 	.ibat_minus_deviation_val = HVDCP3_IBAT_MINUS_DEV_VAL,
 	.ibat_plus_deviation_val = HVDCP3_IBAT_PLUS_DEV_VAL,
 
+<<<<<<< HEAD
 	.fc2_taper_current = 2200,
 	.flash2_policy.down_steps = -1,
 	.flash2_policy.volt_hysteresis = 50,
@@ -101,10 +133,20 @@ static struct sys_config sys_config = {
 	.min_vbat_start_flash2 = 3500,
 	.cp_sec_enable = false,
 	.qc3p5_supported = false,
+=======
+	.fc2_taper_current		= 2200,
+	.flash2_policy.down_steps	= -1,
+	.flash2_policy.volt_hysteresis	= 50,
+
+	.min_vbat_start_flash2		= 3500,
+	.cp_sec_enable			= false,
+	.qc3p5_supported		= false,
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 };
 
 struct cp_qc30_data {
 	struct device *dev;
+<<<<<<< HEAD
 	int bat_volt_max;
 	int bat_curr_max;
 	int bus_volt_max;
@@ -116,6 +158,19 @@ struct cp_qc30_data {
 
 	/* notifiers */
 	struct notifier_block nb;
+=======
+	int			bat_volt_max;
+	int			bat_curr_max;
+	int			bus_volt_max;
+	int			bus_curr_max;
+	int			battery_warm_th;
+	bool			cp_sec_enable;
+	bool			use_qcom_gauge;
+	bool			qc3p5_supported;
+
+	/* notifiers */
+	struct notifier_block	nb;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 };
 
 static pm_t pm_state;
@@ -126,6 +181,10 @@ static int chg_enable_k81;
 
 static struct power_supply *cp_get_sw_psy(void)
 {
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!pm_state.sw_psy)
 		pm_state.sw_psy = power_supply_get_by_name("battery");
 
@@ -134,6 +193,10 @@ static struct power_supply *cp_get_sw_psy(void)
 
 static struct power_supply *cp_get_usb_psy(void)
 {
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!pm_state.usb_psy)
 		pm_state.usb_psy = power_supply_get_by_name("usb");
 
@@ -175,11 +238,17 @@ static struct power_supply *cp_get_fc_psy(void)
 {
 	if (!pm_state.fc_psy) {
 		if (sys_config.cp_sec_enable)
+<<<<<<< HEAD
 			pm_state.fc_psy =
 				power_supply_get_by_name("bq2597x-master");
 		else
 			pm_state.fc_psy =
 				power_supply_get_by_name("bq2597x-standalone");
+=======
+			pm_state.fc_psy = power_supply_get_by_name("bq2597x-master");
+		else
+			pm_state.fc_psy = power_supply_get_by_name("bq2597x-standalone");
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	}
 
 	return pm_state.fc_psy;
@@ -189,26 +258,42 @@ static void cp_update_bms_ibat(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_bms_psy();
 	if (!psy)
 		return;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CURRENT_NOW,
 					&val);
 	if (!ret)
 		pm_state.ibat_now = -(val.intval / 1000);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_CURRENT_NOW, &val);
+	if (!ret)
+		pm_state.ibat_now = -(val.intval / 1000);
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 }
 
 /* set bq27z561 fastcharge mode to enable or disabled */
 static int qc3_set_bms_fastcharge_mode(bool enable)
 {
+<<<<<<< HEAD
 	union power_supply_propval pval = {
 		0,
 	};
+=======
+	union power_supply_propval pval = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	int rc;
 
 	cp_get_usb_psy();
@@ -218,8 +303,13 @@ static int qc3_set_bms_fastcharge_mode(bool enable)
 
 	pval.intval = enable;
 
+<<<<<<< HEAD
 	rc = power_supply_set_property(
 		pm_state.usb_psy, POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
+=======
+	rc = power_supply_set_property(pm_state.usb_psy,
+				POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (rc < 0) {
 		pr_info("Couldn't write fastcharge mode:%d\n", rc);
 		return rc;
@@ -235,16 +325,25 @@ static int qc3_get_batt_current_thermal_level(int *level)
 {
 	int ret, rc;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
 		return 0;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(
 		psy, POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT, &val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	if (rc < 0) {
 		pr_info("Couldn't get fastcharge mode:%d\n", rc);
@@ -263,16 +362,25 @@ static bool qc3_disable_cp_by_jeita_status(void)
 	int batt_temp = 0, bq_input_suspend = 0;
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
 		return false;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_INPUT_SUSPEND,
 					&val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_INPUT_SUSPEND, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		bq_input_suspend = !!val.intval;
 
@@ -280,7 +388,12 @@ static bool qc3_disable_cp_by_jeita_status(void)
 	if (!psy)
 		return false;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TEMP, &val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_TEMP, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	if (ret < 0) {
 		pr_info("Couldn't get batt temp prop:%d\n", ret);
@@ -293,6 +406,7 @@ static bool qc3_disable_cp_by_jeita_status(void)
 	if (bq_input_suspend) {
 		return true;
 	} else {
+<<<<<<< HEAD
 		if (batt_temp >= pm_state.warm_threshold_temp &&
 		    !pm_state.jeita_triggered) {
 			pm_state.jeita_triggered = true;
@@ -306,6 +420,18 @@ static bool qc3_disable_cp_by_jeita_status(void)
 			   (batt_temp >=
 			    (JEITA_COOL_NOT_ALLOW_CP_THR + JEITA_HYSTERESIS)) &&
 			   pm_state.jeita_triggered) {
+=======
+		if (batt_temp >= pm_state.warm_threshold_temp && !pm_state.jeita_triggered) {
+			pm_state.jeita_triggered = true;
+			return true;
+		} else if (batt_temp <= JEITA_COOL_NOT_ALLOW_CP_THR
+				&& !pm_state.jeita_triggered) {
+			pm_state.jeita_triggered = true;
+			return true;
+		} else if ((batt_temp <= (pm_state.warm_threshold_temp - JEITA_HYSTERESIS))
+					&& (batt_temp >= (JEITA_COOL_NOT_ALLOW_CP_THR + JEITA_HYSTERESIS))
+				&& pm_state.jeita_triggered) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			pm_state.jeita_triggered = false;
 			return false;
 		} else {
@@ -318,16 +444,25 @@ static void cp_update_sw_status(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
 		return;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(
 		psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.sw_chager.charge_enabled = val.intval;
 }
@@ -336,16 +471,25 @@ static int qc3_check_night_charging_enabled(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
 		return false;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(
 		psy, POWER_SUPPLY_PROP_BATTERY_INPUT_SUSPEND, &val);
+=======
+	ret = power_supply_get_property(psy,
+		POWER_SUPPLY_PROP_BATTERY_INPUT_SUSPEND, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.night_charging = !!val.intval;
 
@@ -356,15 +500,24 @@ static void cp_get_batt_capacity(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
 		return;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CAPACITY, &val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_CAPACITY, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.capacity = val.intval;
 	pr_info("capacity %d\n", pm_state.capacity);
@@ -374,16 +527,24 @@ static void cp_update_fc_status(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_fc_psy();
 	if (!psy)
 		return;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(
 		psy, POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE, &val);
+=======
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.bq2597x.vbat_volt = val.intval;
 
@@ -391,6 +552,7 @@ static void cp_update_fc_status(void)
 	if (!ret)
 		pm_state.bq2597x.ibat_curr = val.intval; */
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BUS_VOLTAGE,
 					&val);
 	if (!ret)
@@ -428,6 +590,37 @@ static void cp_update_fc_status(void)
 
 	ret = power_supply_get_property(
 		psy, POWER_SUPPLY_PROP_TI_BUS_ERROR_STATUS, &val);
+=======
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BUS_VOLTAGE, &val);
+	if (!ret)
+		pm_state.bq2597x.vbus_volt = val.intval;
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BUS_CURRENT, &val);
+	if (!ret)
+		pm_state.bq2597x.ibus_curr = val.intval;
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE, &val);
+	if (!ret)
+		pm_state.bq2597x.bus_temp = val.intval;
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE, &val);
+	if (!ret)
+		pm_state.bq2597x.bat_temp = val.intval;
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE, &val);
+	if (!ret)
+		pm_state.bq2597x.die_temp = val.intval;
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BATTERY_PRESENT, &val);
+	if (!ret)
+		pm_state.bq2597x.batt_pres = val.intval;
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_VBUS_PRESENT, &val);
+	if (!ret)
+		pm_state.bq2597x.vbus_pres = val.intval;
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BUS_ERROR_STATUS, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.bq2597x.bus_error_status = val.intval;
 
@@ -436,6 +629,7 @@ static void cp_update_fc_status(void)
 		pm_state.bq2597x.ibat_curr = pm_state.ibat_now;
 	}
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED,
 					&val);
 	if (!ret)
@@ -491,21 +685,67 @@ static void cp_update_fc_status(void)
 	}
 }
 
+=======
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED, &val);
+	if (!ret)
+		pm_state.bq2597x.charge_enabled = val.intval;
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_ALARM_STATUS, &val);
+	if (!ret) {
+		pm_state.bq2597x.bat_ovp_alarm = !!(val.intval & BAT_OVP_ALARM_MASK);
+		pm_state.bq2597x.bat_ocp_alarm = !!(val.intval & BAT_OCP_ALARM_MASK);
+		pm_state.bq2597x.bus_ovp_alarm = !!(val.intval & BUS_OVP_ALARM_MASK);
+		pm_state.bq2597x.bus_ocp_alarm = !!(val.intval & BUS_OCP_ALARM_MASK);
+		pm_state.bq2597x.bat_ucp_alarm = !!(val.intval & BAT_UCP_ALARM_MASK);
+		pm_state.bq2597x.bat_therm_alarm = !!(val.intval & BAT_THERM_ALARM_MASK);
+		pm_state.bq2597x.bus_therm_alarm = !!(val.intval & BUS_THERM_ALARM_MASK);
+		pm_state.bq2597x.die_therm_alarm = !!(val.intval & DIE_THERM_ALARM_MASK);
+	}
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_FAULT_STATUS, &val);
+	if (!ret) {
+		pm_state.bq2597x.bat_ovp_fault = !!(val.intval & BAT_OVP_FAULT_MASK);
+		pm_state.bq2597x.bat_ocp_fault = !!(val.intval & BAT_OCP_FAULT_MASK);
+		pm_state.bq2597x.bus_ovp_fault = !!(val.intval & BUS_OVP_FAULT_MASK);
+		pm_state.bq2597x.bus_ocp_fault = !!(val.intval & BUS_OCP_FAULT_MASK);
+		pm_state.bq2597x.bat_therm_fault = !!(val.intval & BAT_THERM_FAULT_MASK);
+		pm_state.bq2597x.bus_therm_fault = !!(val.intval & BUS_THERM_FAULT_MASK);
+		pm_state.bq2597x.die_therm_fault = !!(val.intval & DIE_THERM_FAULT_MASK);
+	}
+
+	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_REG_STATUS, &val);
+	if (!ret) {
+		pm_state.bq2597x.vbat_reg = !!(val.intval & VBAT_REG_STATUS_MASK);
+		pm_state.bq2597x.ibat_reg = !!(val.intval & IBAT_REG_STATUS_MASK);
+	}
+}
+
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 static int cp_enable_fc(bool enable)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_fc_psy();
 	if (!psy)
 		return -ENODEV;
 
 	val.intval = enable;
+<<<<<<< HEAD
 	ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED,
 					&val);
+=======
+	ret = power_supply_set_property(psy,
+			POWER_SUPPLY_PROP_CHARGING_ENABLED, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	return ret;
 }
@@ -514,17 +754,26 @@ static int cp_set_qc_bus_protections(int hvdcp3_type)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_fc_psy();
 	if (!psy)
 		return -ENODEV;
 
 	val.intval = hvdcp3_type;
+<<<<<<< HEAD
 	ret = power_supply_set_property(
 		psy, POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3, &val);
+=======
+	ret = power_supply_set_property(psy,
+			POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	return ret;
 }
@@ -533,17 +782,26 @@ static int cp_enable_sw(bool enable)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
 		return -ENODEV;
 
 	val.intval = enable;
+<<<<<<< HEAD
 	ret = power_supply_set_property(
 		psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+=======
+	ret = power_supply_set_property(psy,
+			POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	return ret;
 }
@@ -552,21 +810,34 @@ static int cp_check_fc_enabled(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_fc_psy();
 	if (!psy)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED,
 					&val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_CHARGING_ENABLED, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.bq2597x.charge_enabled = !!val.intval;
 
 	pr_info("pm_state.bq2597x.charge_enabled: %d\n",
+<<<<<<< HEAD
 		pm_state.bq2597x.charge_enabled);
+=======
+			pm_state.bq2597x.charge_enabled);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	return ret;
 }
 
@@ -574,21 +845,34 @@ static int cp_check_sw_enabled(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(
 		psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.sw_chager.charge_enabled = !!val.intval;
 
 	pr_info("pm_state.sw_chager.charge_enabled: %d\n",
+<<<<<<< HEAD
 		pm_state.sw_chager.charge_enabled);
+=======
+			pm_state.sw_chager.charge_enabled);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	return ret;
 }
 
@@ -596,9 +880,13 @@ static int cp_tune_vbus_volt(bool up)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
@@ -609,21 +897,36 @@ static int cp_tune_vbus_volt(bool up)
 	else
 		val.intval = POWER_SUPPLY_DP_DM_DM_PULSE;
 
+<<<<<<< HEAD
 	ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ, &val);
 
 	pr_err("tune adapter voltage %s %s\n", up ? "up" : "down",
 	       ret ? "fail" : "successfully");
 
 	return ret;
+=======
+	ret = power_supply_set_property(psy,
+			POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+
+	pr_err("tune adapter voltage %s %s\n", up ? "up" : "down",
+			ret ? "fail" : "successfully");
+
+	return ret;
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 }
 
 static int cp_set_fake_hvdcp3(bool enable)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_usb_psy();
 	if (!psy)
@@ -634,8 +937,12 @@ static int cp_set_fake_hvdcp3(bool enable)
 	if (enable)
 		pr_err("cp_set_fake_hvdcp3:set fake_hvdcp3.\n");
 
+<<<<<<< HEAD
 	ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_FAKE_HVDCP3,
 					&val);
+=======
+	ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_FAKE_HVDCP3, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	return ret;
 }
@@ -644,15 +951,24 @@ static int cp_get_qc_pulse_cnt(void)
 {
 	int ret = 0, cnt = 0;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		cnt = val.intval;
 
@@ -665,6 +981,7 @@ static int cp_reset_vbus_volt(void)
 	int ret;
 	int qc3p5_reset_vbus_retry = 0;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
@@ -673,14 +990,25 @@ static int cp_reset_vbus_volt(void)
 		cp_update_fc_status();
 		pr_err("vbat=%d,vbus=%d\n", pm_state.bq2597x.vbat_volt,
 		       pm_state.bq2597x.vbus_volt);
+=======
+	union power_supply_propval val = {0,};
+
+	if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+		cp_update_fc_status();
+		pr_err("vbat=%d,vbus=%d\n", pm_state.bq2597x.vbat_volt, pm_state.bq2597x.vbus_volt);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		while (pm_state.bq2597x.vbus_volt > 6550) {
 			cp_tune_vbus_volt(VOLT_DOWN);
 			cp_update_fc_status();
 			qc3p5_reset_vbus_retry++;
 			usleep_range(10000, 10010);
+<<<<<<< HEAD
 			pr_err("qc3p5_reset_vbus_retry=%d,vbus=%d\n",
 			       qc3p5_reset_vbus_retry,
 			       pm_state.bq2597x.vbus_volt);
+=======
+			pr_err("qc3p5_reset_vbus_retry=%d,vbus=%d\n", qc3p5_reset_vbus_retry, pm_state.bq2597x.vbus_volt);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			if (qc3p5_reset_vbus_retry > 300) {
 				pr_err("Failed to reset qc3.5 adapter volt to 6.55v or less\n");
 				break;
@@ -693,22 +1021,35 @@ static int cp_reset_vbus_volt(void)
 
 		val.intval = POWER_SUPPLY_DP_DM_FORCE_5V;
 
+<<<<<<< HEAD
 		ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ,
 						&val);
+=======
+		ret = power_supply_set_property(psy,
+				POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 		pr_err("reset vbus volt %s\n", ret ? "fail" : "successfully");
 	}
 
 	return ret;
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 }
 
 static int cp_notifier_vbus_raise_done(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
@@ -716,7 +1057,12 @@ static int cp_notifier_vbus_raise_done(void)
 
 	val.intval = POWER_SUPPLY_DP_DM_RAISE_VOLT_DONE;
 
+<<<<<<< HEAD
 	ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+=======
+	ret = power_supply_set_property(psy,
+			POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	pr_err("raise vbus done\n");
 
@@ -727,9 +1073,13 @@ static int cp_notifier_vbus_raise_start(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_sw_psy();
 	if (!psy)
@@ -737,27 +1087,45 @@ static int cp_notifier_vbus_raise_start(void)
 
 	val.intval = POWER_SUPPLY_DP_DM_RAISE_VOLT_START;
 
+<<<<<<< HEAD
 	ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+=======
+	ret = power_supply_set_property(psy,
+			POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	pr_err("raise vbus start\n");
 
 	return ret;
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 }
 
 static int cp_get_wireless_reverse_mode(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_wireless_psy();
 	if (!psy)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_REVERSE_CHG_MODE,
 					&val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_REVERSE_CHG_MODE, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.reverse_mode = val.intval;
 
@@ -767,15 +1135,24 @@ static int cp_get_usb_type(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_usb_psy();
 	if (!psy)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_REAL_TYPE, &val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_REAL_TYPE, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.usb_type = val.intval;
 
@@ -786,15 +1163,24 @@ static int cp_get_usb_present(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_usb_psy();
 	if (!psy)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_PRESENT, &val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_PRESENT, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.usb_present = val.intval;
 
@@ -805,30 +1191,49 @@ static int cp_get_qc_hvdcp3_type(void)
 {
 	int ret;
 	struct power_supply *psy;
+<<<<<<< HEAD
 	union power_supply_propval val = {
 		0,
 	};
+=======
+	union power_supply_propval val = {0,};
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	psy = cp_get_usb_psy();
 	if (!psy)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_HVDCP3_TYPE,
 					&val);
+=======
+	ret = power_supply_get_property(psy,
+			POWER_SUPPLY_PROP_HVDCP3_TYPE, &val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (!ret)
 		pm_state.hvdcp3_type = val.intval;
 	pr_info("hvdcp3 type %d\n", pm_state.hvdcp3_type);
 	return ret;
 }
 
+<<<<<<< HEAD
 #define TAPER_TIMEOUT 10
 #define IBUS_CHANGE_TIMEOUT 5
+=======
+
+#define TAPER_TIMEOUT	10
+#define IBUS_CHANGE_TIMEOUT  5
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 static int cp_flash2_charge(unsigned int port)
 {
 	static int ibus_limit, ibat_limit;
 	int thermal_level = 0;
 	uint16_t effective_fcc_val = cp_get_effective_fcc_val(pm_state);
+<<<<<<< HEAD
 	uint16_t effective_ibus_val = cp_get_effective_fcc_val(pm_state) / 2;
+=======
+	uint16_t effective_ibus_val = cp_get_effective_fcc_val(pm_state)/2;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	qc3_get_batt_current_thermal_level(&thermal_level);
 	qc3_check_night_charging_enabled();
@@ -841,9 +1246,17 @@ static int cp_flash2_charge(unsigned int port)
 	pr_info("ibus_limit: %d\n", ibus_limit);
 
 	pr_err("vbus=%d, ibus=%d, vbat=%d, ibat=%d, ibus_target_val=%d\n",
+<<<<<<< HEAD
 	       pm_state.bq2597x.vbus_volt, pm_state.bq2597x.ibus_curr,
 	       pm_state.bq2597x.vbat_volt, pm_state.bq2597x.ibat_curr,
 	       effective_ibus_val);
+=======
+				pm_state.bq2597x.vbus_volt,
+				pm_state.bq2597x.ibus_curr,
+				pm_state.bq2597x.vbat_volt,
+				pm_state.bq2597x.ibat_curr,
+				effective_ibus_val);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	pm_state.is_temp_out_fc2_range = qc3_disable_cp_by_jeita_status();
 	pr_info("is_temp_out_fc2_range:%d\n", pm_state.is_temp_out_fc2_range);
@@ -855,6 +1268,7 @@ static int cp_flash2_charge(unsigned int port)
 	if (!pm_state.batt_cell_volt_triggered) {
 		cp_get_batt_capacity();
 		if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+<<<<<<< HEAD
 			if (pm_state.bq2597x.vbat_volt >= 4250 ||
 			    pm_state.capacity > 40) {
 				sys_config.ibus_minus_deviation_val =
@@ -865,10 +1279,18 @@ static int cp_flash2_charge(unsigned int port)
 					HVDCP3P5_IBAT_MINUS_DEV_VAL + 100;
 				sys_config.ibat_plus_deviation_val =
 					HVDCP3P5_IBAT_PLUS_DEV_VAL - 50;
+=======
+			if (pm_state.bq2597x.vbat_volt >= 4250 || pm_state.capacity > 40) {
+				sys_config.ibus_minus_deviation_val = HVDCP3P5_IBUS_MINUS_DEV_VAL;
+				sys_config.ibus_plus_deviation_val = HVDCP3P5_IBUS_PLUS_DEV_VAL;
+				sys_config.ibat_minus_deviation_val = HVDCP3P5_IBAT_MINUS_DEV_VAL + 100;
+				sys_config.ibat_plus_deviation_val = HVDCP3P5_IBAT_PLUS_DEV_VAL - 50;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				pm_state.batt_cell_volt_triggered = true;
 				pr_info("for qc3.5, cell_vbat > 4250mv or soc > 40%, modify bq adjust params\n");
 			}
 		} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3) {
+<<<<<<< HEAD
 			if (pm_state.bq2597x.vbat_volt >= 4200 ||
 			    pm_state.capacity > 29) {
 				sys_config.ibus_minus_deviation_val =
@@ -915,6 +1337,51 @@ static int cp_flash2_charge(unsigned int port)
 	    pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt ||
 	    pm_state.bq2597x.ibat_curr > sys_config.bat_curr_lp_lmt + 500 ||
 	    pm_state.bq2597x.ibus_curr > ibus_limit + 310) {
+=======
+			if (pm_state.bq2597x.vbat_volt >= 4200 || pm_state.capacity > 29) {
+				sys_config.ibus_minus_deviation_val = HVDCP3_IBUS_MINUS_DEV_VAL;
+				sys_config.ibus_plus_deviation_val = HVDCP3_IBUS_PLUS_DEV_VAL;
+				sys_config.ibat_minus_deviation_val = HVDCP3_IBAT_MINUS_DEV_VAL + 450;
+				sys_config.ibat_plus_deviation_val = HVDCP3_IBAT_PLUS_DEV_VAL - 450;
+				pm_state.batt_cell_volt_triggered = true;
+				pr_info("for qc3.0, cell_vbat > 4200mv or soc > 29%, modify bq adjust params\n");
+			}
+		 }
+	}
+
+	pr_info("target: t_vbus=%d, t_ibus=%d(m:%d, p:%d), t_vbat=%d, t_ibat=%d(m:%d, p:%d)\n",
+			9500,
+			ibus_limit, sys_config.ibus_minus_deviation_val, sys_config.ibus_plus_deviation_val,
+			sys_config.bat_volt_lp_lmt,
+			ibat_limit, sys_config.ibat_minus_deviation_val, sys_config.ibat_plus_deviation_val);
+
+	if (pm_state.bq2597x.vbus_volt < 10000
+		&& pm_state.bq2597x.ibus_curr < ibus_limit
+		&& !pm_state.bq2597x.bus_ocp_alarm
+		&& !pm_state.bq2597x.bus_ovp_alarm
+		&& pm_state.bq2597x.vbat_volt < sys_config.bat_volt_lp_lmt - 50
+		&& pm_state.bq2597x.ibat_curr < sys_config.bat_curr_lp_lmt
+		&& pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
+
+		cp_tune_vbus_volt(VOLT_UP);
+
+	if (pm_state.bq2597x.vbus_volt < 10000
+		&& pm_state.bq2597x.ibus_curr < ibus_limit - 300
+		&& !pm_state.bq2597x.bus_ocp_alarm
+		&& !pm_state.bq2597x.bus_ovp_alarm
+		&& pm_state.bq2597x.vbat_volt < sys_config.bat_volt_lp_lmt - 50
+		&& pm_state.bq2597x.ibat_curr < sys_config.bat_curr_lp_lmt - 600)
+
+		cp_tune_vbus_volt(VOLT_UP);
+
+	if (pm_state.bq2597x.bus_ocp_alarm
+		|| pm_state.bq2597x.bus_ovp_alarm
+		|| pm_state.bq2597x.vbat_reg
+		|| pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt
+		|| pm_state.bq2597x.ibat_curr > sys_config.bat_curr_lp_lmt + 500
+		|| pm_state.bq2597x.ibus_curr > ibus_limit + 310) {
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		cp_tune_vbus_volt(VOLT_DOWN);
 	}
 
@@ -925,6 +1392,7 @@ static int cp_flash2_charge(unsigned int port)
 		return -ADC_ERR;
 	else if (!pm_state.bq2597x.charge_enabled)
 		return -CP_ENABLE_FAIL;
+<<<<<<< HEAD
 	else if (pm_state.bq2597x.bus_ocp_fault ||
 		 pm_state.bq2597x.bat_ovp_fault ||
 		 pm_state.bq2597x.bus_ovp_fault)
@@ -934,12 +1402,27 @@ static int cp_flash2_charge(unsigned int port)
 		return CP_ENABLE_FAIL;
 	} else if (thermal_level >= MAX_THERMAL_LEVEL ||
 		   pm_state.is_temp_out_fc2_range) {
+=======
+	else if (pm_state.bq2597x.bus_ocp_fault
+			|| pm_state.bq2597x.bat_ovp_fault
+			|| pm_state.bq2597x.bus_ovp_fault)
+		return -ADC_ERR;
+	else if (pm_state.night_charging) {
+		pr_info("night charging feature is enabled!\n");
+		return CP_ENABLE_FAIL; 
+	} else if (thermal_level >= MAX_THERMAL_LEVEL
+			|| pm_state.is_temp_out_fc2_range) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		pr_info("thermal level too high or batt temp is out of fc2 range\n");
 		return CP_ENABLE_FAIL;
 	}
 
 	if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100 &&
+<<<<<<< HEAD
 	    pm_state.bq2597x.ibat_curr < sys_config.fc2_taper_current) {
+=======
+			pm_state.bq2597x.ibat_curr < sys_config.fc2_taper_current) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		if (fc2_taper_timer++ > TAPER_TIMEOUT) {
 			fc2_taper_timer = 0;
 			return TAPER_DONE;
@@ -956,6 +1439,7 @@ const unsigned char *pm_state_str[] = {
 	"CP_STATE_DISCONNECT",
 	"CP_STATE_SW_ENTRY",
 	"CP_STATE_SW_ENTRY_2",
+<<<<<<< HEAD
 	//	"CP_STATE_SW_ENTRY_3",
 	"CP_STATE_SW_LOOP",
 	"CP_STATE_FLASH2_ENTRY",
@@ -963,6 +1447,15 @@ const unsigned char *pm_state_str[] = {
 	//	"CP_STATE_FLASH2_ENTRY_2",
 	"CP_STATE_FLASH2_ENTRY_3",
 	//	"CP_STATE_FLASH2_GET_PPS_STATUS",
+=======
+//	"CP_STATE_SW_ENTRY_3",
+	"CP_STATE_SW_LOOP",
+	"CP_STATE_FLASH2_ENTRY",
+	"CP_STATE_FLASH2_ENTRY_1",
+//	"CP_STATE_FLASH2_ENTRY_2",
+	"CP_STATE_FLASH2_ENTRY_3",
+//	"CP_STATE_FLASH2_GET_PPS_STATUS",
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	"CP_STATE_FLASH2_TUNE",
 	"CP_STATE_FLASH2_DELAY",
 	"CP_STATE_STOP_CHARGE",
@@ -971,8 +1464,13 @@ const unsigned char *pm_state_str[] = {
 static void cp_move_state(pm_sm_state_t state)
 {
 #if 1
+<<<<<<< HEAD
 	pr_debug("pm_state change:%s -> %s\n", pm_state_str[pm_state.state],
 		 pm_state_str[state]);
+=======
+	pr_debug("pm_state change:%s -> %s\n",
+		pm_state_str[pm_state.state], pm_state_str[state]);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	pm_state.state_log[pm_state.log_idx] = pm_state.state;
 	pm_state.log_idx++;
 	pm_state.log_idx %= PM_STATE_LOG_MAX;
@@ -993,8 +1491,12 @@ void cp_statemachine(unsigned int port)
 		recovery = true;
 		cp_set_fake_hvdcp3(false);
 		pr_info("vbus disconnected\n");
+<<<<<<< HEAD
 	} else if (pm_state.state == CP_STATE_DISCONNECT &&
 		   pm_state.usb_type != 0) {
+=======
+	} else if (pm_state.state == CP_STATE_DISCONNECT && pm_state.usb_type != 0) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		pr_err("vbus connected\n");
 		recovery = true;
 		pm_state.jeita_triggered = false;
@@ -1040,6 +1542,7 @@ void cp_statemachine(unsigned int port)
 		cp_get_usb_type();
 		qc3_get_batt_current_thermal_level(&thermal_level);
 		qc3_check_night_charging_enabled();
+<<<<<<< HEAD
 		pm_state.is_temp_out_fc2_range =
 			qc3_disable_cp_by_jeita_status();
 		pr_info("is_temp_out_fc2_range:%d\n",
@@ -1061,6 +1564,24 @@ void cp_statemachine(unsigned int port)
 			else if (pm_state.bq2597x.vbat_volt >
 					 sys_config.bat_volt_lp_lmt - 100 ||
 				 pm_state.capacity >= HIGH_CAPACITY_TRH) {
+=======
+		pm_state.is_temp_out_fc2_range = qc3_disable_cp_by_jeita_status();
+		pr_info("is_temp_out_fc2_range:%d\n", pm_state.is_temp_out_fc2_range);
+		cp_get_batt_capacity();
+		if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3
+				|| pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+			pr_err("vbus_volt:%d\n", pm_state.bq2597x.vbus_volt);
+			cp_reset_vbus_volt();
+			msleep(100);
+			if (thermal_level >= MAX_THERMAL_LEVEL
+					||pm_state.night_charging|| pm_state.is_temp_out_fc2_range) {
+				cp_move_state(CP_STATE_SW_ENTRY);
+				pr_info("thermal too high or batt temp out of range or slowly charging, waiting...\n");
+			} else if (pm_state.bq2597x.vbat_volt < sys_config.min_vbat_start_flash2)
+				cp_move_state(CP_STATE_SW_ENTRY);
+			else if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100
+					|| pm_state.capacity >= HIGH_CAPACITY_TRH) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				pm_state.sw_near_cv = true;
 				cp_move_state(CP_STATE_SW_ENTRY);
 			} else {
@@ -1099,6 +1620,7 @@ void cp_statemachine(unsigned int port)
 			pr_info("cp closed 3 times\n");
 			break;
 		}
+<<<<<<< HEAD
 		pm_state.is_temp_out_fc2_range =
 			qc3_disable_cp_by_jeita_status();
 		qc3_check_night_charging_enabled();
@@ -1125,6 +1647,28 @@ void cp_statemachine(unsigned int port)
 			    sys_config.min_vbat_start_flash2) {
 				pr_err("battery volt: %d is ok, proceeding to flash charging...\n",
 				       pm_state.bq2597x.vbat_volt);
+=======
+		pm_state.is_temp_out_fc2_range = qc3_disable_cp_by_jeita_status();
+		qc3_check_night_charging_enabled();
+		if (thermal_level < MAX_THERMAL_LEVEL && !pm_state.night_charging && !pm_state.is_temp_out_fc2_range && recovery) {
+			pr_info("thermal or batt temp recovery...\n");
+			recovery = false;
+		} else {
+			pr_info("thermal(%d) too high or batt temp out of range\n", thermal_level);
+		}
+		cp_get_batt_capacity();
+		if (pm_state.bq2597x.vbat_volt > sys_config.bat_volt_lp_lmt - 100
+					|| pm_state.capacity >= HIGH_CAPACITY_TRH) {
+				pm_state.sw_near_cv = true;
+		} else {
+			pr_info("capacity(%d) too high or vbat_volt(%d) too low.\n",
+					pm_state.capacity, pm_state.bq2597x.vbat_volt);
+		}
+		if (!pm_state.sw_near_cv && !recovery) {
+			if (pm_state.bq2597x.vbat_volt > sys_config.min_vbat_start_flash2) {
+				pr_err("battery volt: %d is ok, proceeding to flash charging...\n",
+					pm_state.bq2597x.vbat_volt);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				cp_move_state(CP_STATE_FLASH2_ENTRY);
 			}
 		}
@@ -1143,6 +1687,7 @@ void cp_statemachine(unsigned int port)
 		}
 
 		cp_get_qc_hvdcp3_type();
+<<<<<<< HEAD
 		if (pm_state.hvdcp3_type == HVDCP3_CLASSB_27W) { // QC3.0 27W
 			sys_config.bat_curr_lp_lmt =
 				HVDCP3_CLASS_B_BAT_CURRENT_MA;
@@ -1188,6 +1733,34 @@ void cp_statemachine(unsigned int port)
 				HVDCP3P5_CLASS_A_BAT_CURRENT_MA;
 			sys_config.bus_curr_lp_lmt =
 				HVDCP3P5_CLASS_A_BUS_CURRENT_MA;
+=======
+		if (pm_state.hvdcp3_type == HVDCP3_CLASSB_27W) {				// QC3.0 27W
+			sys_config.bat_curr_lp_lmt = HVDCP3_CLASS_B_BAT_CURRENT_MA;
+			sys_config.bus_curr_lp_lmt = HVDCP3_CLASS_B_BUS_CURRENT_MA;
+			pm_state.ibus_lmt_curr = sys_config.bus_curr_lp_lmt;
+			cp_set_qc_bus_protections(HVDCP3_CLASSB_27W);
+		} else if (pm_state.hvdcp3_type == HVDCP3_CLASSA_18W) {			// QC3.0 18W
+			sys_config.bat_curr_lp_lmt = HVDCP3_CLASS_A_BAT_CURRENT_MA;
+			sys_config.bus_curr_lp_lmt = HVDCP3_CLASS_A_BUS_CURRENT_MA;
+			pm_state.ibus_lmt_curr = sys_config.bus_curr_lp_lmt;
+			cp_set_qc_bus_protections(HVDCP3_CLASSA_18W);
+		} else if (pm_state.hvdcp3_type == HVDCP3P5_CLASSB_27W) {		// QC3.5 27W
+			sys_config.ibus_minus_deviation_val = HVDCP3P5_IBUS_MINUS_DEV_VAL;
+			sys_config.ibus_plus_deviation_val = HVDCP3P5_IBUS_PLUS_DEV_VAL;
+			sys_config.ibat_minus_deviation_val = HVDCP3P5_IBAT_MINUS_DEV_VAL;
+			sys_config.ibat_plus_deviation_val = HVDCP3P5_IBAT_PLUS_DEV_VAL;
+			sys_config.bat_curr_lp_lmt = HVDCP3P5_CLASS_B_BAT_CURRENT_MA;
+			sys_config.bus_curr_lp_lmt = HVDCP3P5_CLASS_B_BUS_CURRENT_MA;
+			pm_state.ibus_lmt_curr = sys_config.bus_curr_lp_lmt;
+			cp_set_qc_bus_protections(HVDCP3P5_CLASSB_27W);
+		} else if (pm_state.hvdcp3_type == HVDCP3P5_CLASSA_18W) {		// QC3.5 18W
+			sys_config.ibus_minus_deviation_val = HVDCP3P5_IBUS_MINUS_DEV_VAL;
+			sys_config.ibus_plus_deviation_val = HVDCP3P5_IBUS_PLUS_DEV_VAL;
+			sys_config.ibat_minus_deviation_val = HVDCP3P5_IBAT_MINUS_DEV_VAL;
+			sys_config.ibat_plus_deviation_val = HVDCP3P5_IBAT_PLUS_DEV_VAL;
+			sys_config.bat_curr_lp_lmt = HVDCP3P5_CLASS_A_BAT_CURRENT_MA;
+			sys_config.bus_curr_lp_lmt = HVDCP3P5_CLASS_A_BUS_CURRENT_MA;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			pm_state.ibus_lmt_curr = sys_config.bus_curr_lp_lmt;
 			cp_set_qc_bus_protections(HVDCP3P5_CLASSA_18W);
 		} else {
@@ -1199,22 +1772,33 @@ void cp_statemachine(unsigned int port)
 		cp_update_fc_status();
 
 		if (sys_config.qc3p5_supported) {
+<<<<<<< HEAD
 			if (pm_state.bq2597x.bus_error_status ==
 			    VBUS_ERROR_LOW) {
+=======
+			if (pm_state.bq2597x.bus_error_status == VBUS_ERROR_LOW) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				tune_vbus_retry = cp_get_qc_pulse_cnt();
 				tune_vbus_retry++;
 				cp_tune_vbus_volt(VOLT_UP);
 				pr_info("vbus:%d, retry_times:%d, tuning...\n",
+<<<<<<< HEAD
 					pm_state.bq2597x.vbus_volt,
 					tune_vbus_retry);
 #ifdef CONFIG_CHARGER_LN8000_PSYCHE
 			} else if (pm_state.bq2597x.vbus_volt <
 				   (pm_state.bq2597x.vbat_volt * 2 +
 				    BUS_VOLT_INIT_UP - 50)) {
+=======
+						pm_state.bq2597x.vbus_volt, tune_vbus_retry);
+#ifdef CONFIG_CHARGER_LN8000_PSYCHE
+			} else if (pm_state.bq2597x.vbus_volt < (pm_state.bq2597x.vbat_volt * 2 + BUS_VOLT_INIT_UP - 50)) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				tune_vbus_retry = cp_get_qc_pulse_cnt();
 				tune_vbus_retry++;
 				cp_tune_vbus_volt(VOLT_UP);
 				pr_info("ln vbus:%d, retry_times:%d, tuning...\n",
+<<<<<<< HEAD
 					pm_state.bq2597x.vbus_volt,
 					tune_vbus_retry);
 #endif
@@ -1222,18 +1806,32 @@ void cp_statemachine(unsigned int port)
 				pr_err("vbus:%d, tuned above expected voltage, retry_times:%d\n",
 				       pm_state.bq2597x.vbus_volt,
 				       tune_vbus_retry);
+=======
+						pm_state.bq2597x.vbus_volt, tune_vbus_retry);
+#endif
+			} else {
+				pr_err("vbus:%d, tuned above expected voltage, retry_times:%d\n",
+						pm_state.bq2597x.vbus_volt, tune_vbus_retry);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				cp_move_state(CP_STATE_FLASH2_ENTRY_3);
 				break;
 			}
 
+<<<<<<< HEAD
 			if (pm_state.usb_type ==
 				    POWER_SUPPLY_TYPE_USB_HVDCP_3 &&
 			    tune_vbus_retry == FAKE_HVDCP3_DP_COUNT &&
 			    pm_state.bq2597x.vbus_volt <= FAKE_HVDCP3_VBUS) {
+=======
+			if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3
+					&& tune_vbus_retry == FAKE_HVDCP3_DP_COUNT
+					&& pm_state.bq2597x.vbus_volt <= FAKE_HVDCP3_VBUS) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				cp_move_state(CP_STATE_SW_ENTRY);
 				cp_set_fake_hvdcp3(true);
 			}
 
+<<<<<<< HEAD
 			if ((pm_state.usb_type ==
 				     POWER_SUPPLY_TYPE_USB_HVDCP_3 &&
 			     tune_vbus_retry > MAX_PLUSE_COUNT_ALLOWED) ||
@@ -1241,6 +1839,12 @@ void cp_statemachine(unsigned int port)
 				     POWER_SUPPLY_TYPE_USB_HVDCP_3P5 &&
 			     tune_vbus_retry >
 				     MAX_HVDCP3P5_PLUSE_COUNT_ALLOWED)) {
+=======
+			if((pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3
+						&& tune_vbus_retry > MAX_PLUSE_COUNT_ALLOWED)
+					|| (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5
+						&& tune_vbus_retry > MAX_HVDCP3P5_PLUSE_COUNT_ALLOWED)) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				pr_err("Failed to tune adapter volt into valid range, charge with switching charger\n");
 				pm_state.sw_fc2_init_fail = true;
 				cp_move_state(CP_STATE_SW_ENTRY);
@@ -1248,6 +1852,7 @@ void cp_statemachine(unsigned int port)
 			break;
 
 		} else {
+<<<<<<< HEAD
 			if (pm_state.bq2597x.vbus_volt <
 			    (pm_state.bq2597x.vbat_volt * 2 + BUS_VOLT_INIT_UP -
 			     50)) {
@@ -1256,6 +1861,13 @@ void cp_statemachine(unsigned int port)
 			} else {
 				pr_err("voltage tuned above expected voltage, retry %d times\n",
 				       tune_vbus_retry);
+=======
+			if (pm_state.bq2597x.vbus_volt < (pm_state.bq2597x.vbat_volt * 2 + BUS_VOLT_INIT_UP - 50)) {
+				tune_vbus_retry++;
+				cp_tune_vbus_volt(VOLT_UP);
+			} else {
+				pr_err("voltage tuned above expected voltage, retry %d times\n", tune_vbus_retry);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				cp_move_state(CP_STATE_FLASH2_ENTRY_3);
 				break;
 			}
@@ -1266,10 +1878,15 @@ void cp_statemachine(unsigned int port)
 				cp_move_state(CP_STATE_SW_ENTRY);
 			}
 			break;
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 		}
 
 	case CP_STATE_FLASH2_ENTRY_3:
 		if (sys_config.qc3p5_supported) {
+<<<<<<< HEAD
 			if (pm_state.bq2597x.bus_error_status ==
 			    VBUS_ERROR_HIGH) {
 				pr_err("vbus=%d, too high to open cp switcher, decrease it.\n",
@@ -1279,6 +1896,15 @@ void cp_statemachine(unsigned int port)
 				   VBUS_ERROR_LOW) {
 				pr_err("vbus=%d, too low to open cp switcher, increase it.\n",
 				       pm_state.bq2597x.vbus_volt);
+=======
+			if (pm_state.bq2597x.bus_error_status == VBUS_ERROR_HIGH) {
+				pr_err("vbus=%d, too high to open cp switcher, decrease it.\n",
+						pm_state.bq2597x.vbus_volt);
+				cp_tune_vbus_volt(VOLT_DOWN);
+			} else if (pm_state.bq2597x.bus_error_status == VBUS_ERROR_LOW) {
+				pr_err("vbus=%d, too low to open cp switcher, increase it.\n",
+						pm_state.bq2597x.vbus_volt);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				cp_tune_vbus_volt(VOLT_UP);
 			} else {
 				pr_err("vbat volt is ok, enable flash charging\n");
@@ -1287,20 +1913,31 @@ void cp_statemachine(unsigned int port)
 					cp_check_fc_enabled();
 					if (pm_state.bq2597x.charge_enabled) {
 						if (retry_enable_bq_count > 0)
+<<<<<<< HEAD
 							retry_enable_bq_count =
 								0;
 						cp_move_state(
 							CP_STATE_FLASH2_TUNE);
+=======
+							retry_enable_bq_count = 0;
+						cp_move_state(CP_STATE_FLASH2_TUNE);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 						cp_enable_sw(false);
 						cp_update_sw_status();
 					} else {
 						retry_enable_bq_count++;
 						if (retry_enable_bq_count < 5)
+<<<<<<< HEAD
 							cp_move_state(
 								CP_STATE_FLASH2_ENTRY_3);
 						else
 							cp_move_state(
 								CP_STATE_SW_ENTRY);
+=======
+							cp_move_state(CP_STATE_FLASH2_ENTRY_3);
+						else
+							cp_move_state(CP_STATE_SW_ENTRY);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 					}
 				} else {
 					if (retry_enable_bq_count > 0)
@@ -1315,8 +1952,12 @@ void cp_statemachine(unsigned int port)
 			break;
 		} else {
 			if (pm_state.bq2597x.vbus_volt >
+<<<<<<< HEAD
 			    (pm_state.bq2597x.vbat_volt * 2 + BUS_VOLT_INIT_UP +
 			     200)) {
+=======
+					(pm_state.bq2597x.vbat_volt * 2 + BUS_VOLT_INIT_UP + 200)) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 				pr_err("vbat volt is too high, wait it down\n");
 				/* voltage is too high, wait for voltage down, keep charge disabled to discharge */
 			} else {
@@ -1329,6 +1970,7 @@ void cp_statemachine(unsigned int port)
 						cp_notifier_vbus_raise_done();
 						cp_enable_sw(false);
 						cp_check_sw_enabled();
+<<<<<<< HEAD
 						cp_move_state(
 							CP_STATE_FLASH2_TUNE);
 					} else {
@@ -1338,6 +1980,14 @@ void cp_statemachine(unsigned int port)
 						else
 							cp_move_state(
 								CP_STATE_SW_ENTRY);
+=======
+						cp_move_state(CP_STATE_FLASH2_TUNE);
+					} else {
+						if (retry_enable_bq_count < 5)
+							cp_move_state(CP_STATE_FLASH2_ENTRY_3);
+						else
+							cp_move_state(CP_STATE_SW_ENTRY);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 					}
 				}
 				ibus_lmt_change_timer = 0;
@@ -1361,17 +2011,28 @@ void cp_statemachine(unsigned int port)
 		} else if (ret == -CP_ENABLE_FAIL || ret == TAPER_DONE) {
 			pr_err("Move to switch charging:%d\n", ret);
 			cp_enable_fail_count++;
+<<<<<<< HEAD
 			pr_err("cp_enable_fail_count now:%d\n",
 			       cp_enable_fail_count);
+=======
+			pr_err("cp_enable_fail_count now:%d\n", cp_enable_fail_count);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			cp_move_state(CP_STATE_SW_ENTRY);
 			break;
 		} else if (ret == CP_ENABLE_FAIL) {
 			tune_vbus_count = 0;
 			pr_err("Move to switch charging, will try to recover to flash charging:%d\n",
+<<<<<<< HEAD
 			       ret);
 			recovery = true;
 			cp_move_state(CP_STATE_SW_ENTRY);
 		} else { // normal tune adapter output
+=======
+					ret);
+			recovery = true;
+			cp_move_state(CP_STATE_SW_ENTRY);
+		} else {// normal tune adapter output
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			cp_move_state(CP_STATE_FLASH2_DELAY);
 		}
 		break;
@@ -1413,8 +2074,12 @@ static void cp_workfunc(struct work_struct *work)
 	cp_update_fc_status();
 
 	cp_get_usb_present();
+<<<<<<< HEAD
 	pr_info("pm_state.usb_present: %d, pm_state.usb_type:%d\n",
 		pm_state.usb_present, pm_state.usb_type);
+=======
+	pr_info("pm_state.usb_present: %d, pm_state.usb_type:%d\n", pm_state.usb_present, pm_state.usb_type);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 	/* fix QC3 will stay in CP_STATE_STOP_CHARGE and caused not charge issue */
 	if (pm_state.usb_present == 1 && usb_present == 0) {
@@ -1435,6 +2100,7 @@ static void cp_workfunc(struct work_struct *work)
 	}
 	cp_statemachine(0);
 
+<<<<<<< HEAD
 	if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 ||
 	    (last_usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 &&
 	     pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP)) {
@@ -1443,6 +2109,13 @@ static void cp_workfunc(struct work_struct *work)
 	} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
 		schedule_delayed_work(&pm_state.qc3_pm_work,
 				      msecs_to_jiffies(PM_WORK_TIME_100MS));
+=======
+	if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 || (last_usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 
+	&& pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP)) {
+		schedule_delayed_work(&pm_state.qc3_pm_work, msecs_to_jiffies(PM_WORK_TIME_500MS));
+	} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5){
+		schedule_delayed_work(&pm_state.qc3_pm_work, msecs_to_jiffies(PM_WORK_TIME_100MS));
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	}
 	last_usb_type = pm_state.usb_type;
 }
@@ -1461,8 +2134,13 @@ static void disable_hvdcp3_workfunc(struct work_struct *work)
 	}
 }
 
+<<<<<<< HEAD
 static int cp_qc30_notifier_call(struct notifier_block *nb, unsigned long ev,
 				 void *v)
+=======
+static int cp_qc30_notifier_call(struct notifier_block *nb,
+		unsigned long ev, void *v)
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 {
 	struct power_supply *psy = v;
 	static bool usb_hvdcp3_on;
@@ -1472,6 +2150,7 @@ static int cp_qc30_notifier_call(struct notifier_block *nb, unsigned long ev,
 
 	if (strcmp(psy->desc->name, "usb") == 0) {
 		cp_get_usb_type();
+<<<<<<< HEAD
 		if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 &&
 		    !pm_state.reverse_mode) {
 			if (!usb_hvdcp3_on) {
@@ -1495,6 +2174,24 @@ static int cp_qc30_notifier_call(struct notifier_block *nb, unsigned long ev,
 			}
 		} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_UNKNOWN &&
 			   usb_hvdcp3_on == true) {
+=======
+		if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 && !pm_state.reverse_mode) {
+			if (!usb_hvdcp3_on) {
+				schedule_delayed_work(&pm_state.qc3_pm_work, 3*HZ);
+				usb_hvdcp3_on = true;
+			} else {
+				schedule_delayed_work(&pm_state.qc3_pm_work, msecs_to_jiffies(300));
+			}
+		} else if (sys_config.qc3p5_supported
+				&& pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+			if (!usb_hvdcp3_on) {
+				schedule_delayed_work(&pm_state.qc3_pm_work, HZ);
+				usb_hvdcp3_on = true;
+			} else {
+				schedule_delayed_work(&pm_state.qc3_pm_work, msecs_to_jiffies(100));
+			}
+		} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_UNKNOWN && usb_hvdcp3_on == true) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			cancel_delayed_work(&pm_state.qc3_pm_work);
 			schedule_delayed_work(&pm_state.qc3_pm_work, 0);
 			cp_set_fake_hvdcp3(false);
@@ -1505,9 +2202,14 @@ static int cp_qc30_notifier_call(struct notifier_block *nb, unsigned long ev,
 	if (strcmp(psy->desc->name, "wireless") == 0) {
 		cp_get_wireless_reverse_mode();
 		cp_get_usb_type();
+<<<<<<< HEAD
 		if (!pm_state.reverse_mode &&
 		    pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3) {
 			schedule_delayed_work(&pm_state.qc3_pm_work, 3 * HZ);
+=======
+		if (!pm_state.reverse_mode && pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3) {
+			schedule_delayed_work(&pm_state.qc3_pm_work, 3*HZ);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 			usb_hvdcp3_on = true;
 		} else if (pm_state.reverse_mode && !chg_enable_k81) {
 			schedule_work(&pm_state.disable_hvdcp3_work);
@@ -1540,35 +2242,56 @@ static int cp_qc30_parse_dt(struct cp_qc30_data *chip)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	rc = of_property_read_u32(node, "mi,qc3-bat-volt-max",
 				  &chip->bat_volt_max);
+=======
+	rc = of_property_read_u32(node,
+			"mi,qc3-bat-volt-max", &chip->bat_volt_max);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (rc < 0)
 		pr_err("qc3-bat-volt-max property missing, use default val\n");
 	else
 		sys_config.bat_volt_lp_lmt = chip->bat_volt_max;
 
+<<<<<<< HEAD
 	rc = of_property_read_u32(node, "mi,qc3-bat-curr-max",
 				  &chip->bat_curr_max);
+=======
+	rc = of_property_read_u32(node,
+			"mi,qc3-bat-curr-max", &chip->bat_curr_max);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (rc < 0)
 		pr_err("qc3-bat-curr-max property missing, use default val\n");
 	else
 		sys_config.bat_curr_lp_lmt = chip->bat_curr_max;
 
+<<<<<<< HEAD
 	rc = of_property_read_u32(node, "mi,qc3-bus-volt-max",
 				  &chip->bus_volt_max);
+=======
+	rc = of_property_read_u32(node,
+			"mi,qc3-bus-volt-max", &chip->bus_volt_max);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (rc < 0)
 		pr_err("qc3-bus-volt-max property missing, use default val\n");
 	else
 		sys_config.bus_volt_lp_lmt = chip->bus_volt_max;
 
+<<<<<<< HEAD
 	rc = of_property_read_u32(node, "mi,qc3-bus-curr-max",
 				  &chip->bus_curr_max);
+=======
+	rc = of_property_read_u32(node,
+			"mi,qc3-bus-curr-max", &chip->bus_curr_max);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	if (rc < 0)
 		pr_err("qc3-bus-curr-max property missing, use default val\n");
 	else
 		sys_config.bus_curr_lp_lmt = chip->bus_curr_max;
 
 	chip->battery_warm_th = JEITA_WARM_THR;
+<<<<<<< HEAD
 	rc = of_property_read_u32(node, "mi,qc3-battery-warm-th",
 				  &chip->battery_warm_th);
 	if (rc < 0)
@@ -1585,6 +2308,27 @@ static int cp_qc30_parse_dt(struct cp_qc30_data *chip)
 	chg_enable_k81 = of_property_read_bool(node, "mi,chg-enable-k81");
 
 	chip->use_qcom_gauge = of_property_read_bool(node, "mi,use-qcom-gauge");
+=======
+	rc = of_property_read_u32(node,
+			"mi,qc3-battery-warm-th", &chip->battery_warm_th);
+	if (rc < 0)
+		pr_err("qc3-battery-warm-th missing, use default val\n");
+
+	chip->cp_sec_enable = of_property_read_bool(node,
+				"mi,cp-sec-enable");
+
+	sys_config.cp_sec_enable = chip->cp_sec_enable;
+
+	chip->qc3p5_supported = of_property_read_bool(node,
+			"mi,support-qc3p5-without-smb");
+	sys_config.qc3p5_supported = chip->qc3p5_supported;
+
+	chg_enable_k81 = of_property_read_bool(node,
+			"mi,chg-enable-k81");
+
+	chip->use_qcom_gauge = of_property_read_bool(node,
+				"mi,use-qcom-gauge");
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	return rc;
 }
 
@@ -1608,7 +2352,11 @@ static int cp_qc30_probe(struct platform_device *pdev)
 	}
 	platform_set_drvdata(pdev, chip);
 
+<<<<<<< HEAD
 	pm_state.warm_threshold_temp = chip->battery_warm_th;
+=======
+	pm_state.warm_threshold_temp =  chip->battery_warm_th;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	pr_info("battery_warm_th = %d\n", chip->battery_warm_th);
 	pm_state.state = CP_STATE_DISCONNECT;
 	pm_state.usb_type = POWER_SUPPLY_TYPE_UNKNOWN;
@@ -1632,9 +2380,13 @@ static int cp_qc30_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id cp_qc30_of_match[] = {
+<<<<<<< HEAD
 	{
 		.compatible = "xiaomi,cp-qc30",
 	},
+=======
+	{ .compatible = "xiaomi,cp-qc30", },
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	{},
 };
 
@@ -1664,3 +2416,7 @@ module_exit(cp_qc30_exit);
 MODULE_AUTHOR("Fei Jiang<jiangfei1@xiaomi.com>");
 MODULE_DESCRIPTION("Xiaomi cp qc30");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
