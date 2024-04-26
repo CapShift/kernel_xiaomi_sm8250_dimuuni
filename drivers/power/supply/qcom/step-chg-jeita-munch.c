@@ -588,8 +588,18 @@ static int get_val(struct range_data *range, int hysteresis, int current_index,
 static void taper_fcc_step_chg(struct step_chg_info *chip, int index,
 					int current_voltage)
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
 	u32 current_fcc, target_fcc;
 	u32 current_debug;
+=======
+	int current_fcc, target_fcc,last_index_fcc;
+	int current_debug;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+	u32 current_fcc, target_fcc;
+	u32 current_debug;
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 	union power_supply_propval pval = {0, };
 	int pps_max_watts = 0;
 	if (index < 0) {
@@ -630,9 +640,25 @@ static void taper_fcc_step_chg(struct step_chg_info *chip, int index,
 		 * control parameter exceeds the high threshold of previous
 		 * step charging index configuration.
 		 */
+<<<<<<< HEAD
+<<<<<<< HEAD
 		vote(chip->fcc_votable, STEP_CHG_VOTER, true, max(target_fcc,
 			current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA));
 		current_debug = current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA;
+=======
+		current_debug = current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA;
+		if (current_debug < 0) {
+			current_debug = 0;
+			pr_err("fcc_votable_CV %d\n",current_debug);
+		}
+		vote(chip->fcc_votable, STEP_CHG_VOTER, true, max(target_fcc,
+			current_debug));
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+		vote(chip->fcc_votable, STEP_CHG_VOTER, true, max(target_fcc,
+			current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA));
+		current_debug = current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA;
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 		pr_err("fcc_votable_CV %d-%d-%d\n",current_fcc, target_fcc,current_debug);
 	} else if ((current_fcc >
 		chip->step_chg_config->fcc_cfg[index - 1].value) &&
@@ -644,10 +670,29 @@ static void taper_fcc_step_chg(struct step_chg_info *chip, int index,
 		 * index without FCCs saturation for the previous index, ramp
 		 * down FCC till previous index FCC configuration is reached.
 		 */
+<<<<<<< HEAD
+<<<<<<< HEAD
 		vote(chip->fcc_votable, STEP_CHG_VOTER, true,
 			max(chip->step_chg_config->fcc_cfg[index - 1].value,
 			current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA));
 		current_debug = current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA;
+=======
+		current_debug = current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA;
+		if (current_debug < 0) {
+			current_debug = 0;
+			pr_err("fcc_votable_CV %d\n",current_debug);
+		}
+
+		last_index_fcc = chip->step_chg_config->fcc_cfg[index - 1].value;
+		vote(chip->fcc_votable, STEP_CHG_VOTER, true,
+			max(last_index_fcc,current_debug));
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+		vote(chip->fcc_votable, STEP_CHG_VOTER, true,
+			max(chip->step_chg_config->fcc_cfg[index - 1].value,
+			current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA));
+		current_debug = current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA;
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 		pr_err("fcc_votable_CV1 %d-%d-%d\n",current_fcc, chip->step_chg_config->fcc_cfg[index - 1].value,current_debug);
 	}
 }
@@ -934,8 +979,18 @@ static int handle_jeita(struct step_chg_info *chip)
 		chip->jeita_fv_config->param.hysteresis = 5;
 		chip->jeita_fcc_config->param.hysteresis = 5;
 	} else  {
+<<<<<<< HEAD
+<<<<<<< HEAD
 		chip->jeita_fv_config->param.hysteresis = 20;
 		chip->jeita_fcc_config->param.hysteresis = 20;
+=======
+		chip->jeita_fv_config->param.hysteresis = 18;
+		chip->jeita_fcc_config->param.hysteresis = 18;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+		chip->jeita_fv_config->param.hysteresis = 20;
+		chip->jeita_fcc_config->param.hysteresis = 20;
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 	}
 
 	rc = get_val(chip->jeita_fcc_config->fcc_cfg,
@@ -965,8 +1020,19 @@ static int handle_jeita(struct step_chg_info *chip)
 		return -EINVAL;
 
 	if (chip->cold_step_chg_cfg_valid) {
+<<<<<<< HEAD
+<<<<<<< HEAD
 		vote(chip->fcc_votable, JEITA_VOTER, fcc_ua ? true : false, fcc_ua);
 		if (chip->jeita_fcc_index == 0 && chip->jeita_cold_fcc_index != 0)
+=======
+		if(chip->jeita_fcc_index > 0)
+			vote(chip->fcc_votable, JEITA_VOTER, fcc_ua ? true : false, fcc_ua);
+		if (chip->jeita_fcc_index == 0)
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+		vote(chip->fcc_votable, JEITA_VOTER, fcc_ua ? true : false, fcc_ua);
+		if (chip->jeita_fcc_index == 0 && chip->jeita_cold_fcc_index != 0)
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 			vote(chip->fcc_votable, JEITA_VOTER, cold_fcc_ua ? true : false, cold_fcc_ua);
 	} else {
 		vote(chip->fcc_votable, JEITA_VOTER, fcc_ua ? true : false, fcc_ua);
@@ -1021,7 +1087,15 @@ static int handle_jeita(struct step_chg_info *chip)
 		curr_vbat_uv = pval.intval;
 
 		if (!chip->six_pin_battery) {
+<<<<<<< HEAD
+<<<<<<< HEAD
 			if ((curr_vbat_uv > fv_uv) && (temp >= chip->jeita_warm_th))
+=======
+			if ((curr_vbat_uv > WARM_VFLOAT_UV) && (temp >= chip->jeita_warm_th))
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+			if ((curr_vbat_uv > fv_uv) && (temp >= chip->jeita_warm_th))
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 				vote(chip->usb_icl_votable, JEITA_VOTER, true, 0);
 			else if (curr_vbat_uv < (fv_uv - JEITA_SUSPEND_HYST_UV))
 				vote(chip->usb_icl_votable, JEITA_VOTER, false, 0);
@@ -1039,7 +1113,15 @@ static int handle_jeita(struct step_chg_info *chip)
 				if (curr_vbat_uv > fv_uv + JEITA_SIX_PIN_BATT_HYST_UV) {
 					if (pval.intval == POWER_SUPPLY_CHARGE_TYPE_TAPER && fv_uv == WARM_VFLOAT_UV)
 						vote(chip->usb_icl_votable, JEITA_VOTER, true, 0);
+<<<<<<< HEAD
+<<<<<<< HEAD
 				} else if (curr_vbat_uv < (fv_uv - JEITA_SUSPEND_HYST_UV)) {
+=======
+				} else if (curr_vbat_uv < (WARM_VFLOAT_UV - JEITA_SUSPEND_HYST_UV)) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+				} else if (curr_vbat_uv < (fv_uv - JEITA_SUSPEND_HYST_UV)) {
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 					vote(chip->usb_icl_votable, JEITA_VOTER, false, 0);
 				}
 			} else {
@@ -1054,7 +1136,21 @@ static int handle_jeita(struct step_chg_info *chip)
 	}
 
 set_jeita_fv:
+<<<<<<< HEAD
+<<<<<<< HEAD
 	vote(chip->fv_votable, JEITA_VOTER, fv_uv ? true : false, fv_uv);
+=======
+	pval.intval = 0;
+	rc = power_supply_get_property(chip->batt_psy,
+				POWER_SUPPLY_PROP_SMART_BATT, &pval);
+	if (rc < 0) {
+		pr_err("Get samrt batt failed, rc = %d\n", rc);	
+	}
+	vote(chip->fv_votable, JEITA_VOTER, fv_uv ? true : false, fv_uv - pval.intval);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+	vote(chip->fv_votable, JEITA_VOTER, fv_uv ? true : false, fv_uv);
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 
 update_time:
 	chip->jeita_last_update_time = ktime_get();
@@ -1300,3 +1396,10 @@ void qcom_step_chg_deinit(void)
 	wakeup_source_unregister(chip->step_chg_ws);
 	the_chip = NULL;
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")

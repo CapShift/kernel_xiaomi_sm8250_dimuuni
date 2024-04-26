@@ -110,7 +110,14 @@ enum print_reason {
 #define MAX_TEMP_LEVEL		16
 /* defined for distinguish qc class_a and class_b */
 #define VOL_THR_FOR_QC_CLASS_AB		12400000
+<<<<<<< HEAD
+<<<<<<< HEAD
 #define VOL_THR_FOR_QC_CLASS_AB_DAGU	12300000
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+#define VOL_THR_FOR_QC_CLASS_AB_DAGU	12300000
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 #define VOL_THR_FOR_QC_CLASS_AB_PSYCHE	12300000
 #define COMP_FOR_LOW_RESISTANCE_CABLE	100000
 #define QC_CLASS_A_CURRENT_UA		3600000
@@ -145,12 +152,22 @@ enum print_reason {
 #define SDP_100_MA			100000
 #define SDP_CURRENT_UA			500000
 #define CDP_CURRENT_UA			1500000
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 
 #ifdef CONFIG_QPNP_SMB5_DAGU
 #define DCP_CURRENT_UA			2000000
 #else
 #define DCP_CURRENT_UA			1600000
 #endif
+<<<<<<< HEAD
+=======
+#define DCP_CURRENT_UA			1600000
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 
 #ifdef CONFIG_RX1619_REMOVE
 #define HVDCP_START_CURRENT_UA		500000
@@ -203,9 +220,18 @@ enum print_reason {
 
 #define QC3P5_CHARGER_ICL	2000000
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 // smart battery
 #define SMART_BATTERY_FV   "SMART_BATTERY_FV"
 
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+// smart battery
+#define SMART_BATTERY_FV   "SMART_BATTERY_FV"
+
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 #ifndef CONFIG_FUEL_GAUGE_BQ27Z561_MUNCH
 #define ESR_WORK_VOTER			"ESR_WORK_VOTER"
 #define ESR_WORK_TIME_2S	2000
@@ -617,7 +643,14 @@ struct smb_charger {
 	struct power_supply		*cp_chip_psy;
 	struct power_supply		*cp_psy;
 	struct power_supply             *cp_sec_psy;
+<<<<<<< HEAD
+<<<<<<< HEAD
 	struct power_supply             *ps_psy;
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+	struct power_supply             *ps_psy;
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 #ifdef CONFIG_BATT_VERIFY_BY_DS28E16
 	struct power_supply		*batt_verify_psy;
 #endif
@@ -996,7 +1029,14 @@ struct smb_charger {
 
 	int			night_chg_flag;
 	u8			apsd_stats;
+<<<<<<< HEAD
+<<<<<<< HEAD
 	bool			has_dp;
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+	bool			has_dp;
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 };
 
 int smblib_read(struct smb_charger *chg, u16 addr, u8 *val);
@@ -1255,8 +1295,16 @@ int smblib_set_prop_typec_boost_otg_disable(struct smb_charger *chg,
 				     const union power_supply_propval *val);
 int smblib_set_prop_battery_charging_enabled(struct smb_charger *chg,
 				const union power_supply_propval *val);
+<<<<<<< HEAD
+<<<<<<< HEAD
 int smblib_set_prop_smart_battery_enabled(struct smb_charger *chg,
 				    const union power_supply_propval *val);
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+int smblib_set_prop_smart_battery_enabled(struct smb_charger *chg,
+				    const union power_supply_propval *val);
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 int smblib_set_vbus_disable(struct smb_charger *chg,
 					bool disable);
 int smblib_get_iio_channel(struct smb_charger *chg, const char *propname,

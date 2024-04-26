@@ -2487,7 +2487,15 @@ static void smblib_check_input_status(struct smb_charger *chg)
 	if ((input_present & INPUT_PRESENT_DC
 			|| input_present & INPUT_PRESENT_USB)
 				&& !off_charge_flag
+<<<<<<< HEAD
+<<<<<<< HEAD
 				&& (vbat_uv <= (CUTOFF_VOL_THR - 200))) {
+=======
+				&& (vbat_uv <= CUTOFF_VOL_THR)) {
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+				&& (vbat_uv <= (CUTOFF_VOL_THR - 200))) {
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 		chg->report_input_absent = true;
 		power_supply_changed(chg->batt_psy);
 	}
@@ -4470,10 +4478,15 @@ int smblib_disable_hw_jeita(struct smb_charger *chg, bool disable)
 	/*
 	 * Disable h/w base JEITA compensation if s/w JEITA is enabled
 	 */
+<<<<<<< HEAD
+#if (defined CONFIG_FUEL_GAUGE_BQ27Z561) || (defined CONFIG_DUAL_FUEL_GAUGE_BQ27Z561)
+	mask = 0xFF;
+=======
 	 /*J1/K81 use ti gauge disable all hard jeita, J2 use qcom default jeita */
 #if (defined CONFIG_FUEL_GAUGE_BQ27Z561) || (defined CONFIG_DUAL_FUEL_GAUGE_BQ27Z561)
 	mask = 0xFF;
 	pr_info("should disable hw jeita");
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 #else
 	mask = JEITA_EN_COLD_SL_FCV_BIT
 		| JEITA_EN_HOT_SL_FCV_BIT
@@ -6920,7 +6933,10 @@ int smblib_set_prop_typec_boost_otg_disable(struct smb_charger *chg,
 	return rc;
 }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 int smblib_set_prop_typec_select_rp(struct smb_charger *chg,
 				    const union power_supply_propval *val)
 {
@@ -8288,6 +8304,25 @@ void smblib_usb_plugin_hard_reset_locked(struct smb_charger *chg)
 		if (chg->fcc_stepper_enable)
 			vote(chg->fcc_votable, FCC_STEPPER_VOTER,
 							true, 1500000);
+<<<<<<< HEAD
+
+		/* Check whether charge pump trigger reset after plug out */
+		if (!chg->cp_psy)
+			chg->cp_psy = power_supply_get_by_name("bq2597x-master");
+		if (!chg->cp_sec_psy)
+			chg->cp_sec_psy = power_supply_get_by_name("bq2597x-slave");
+		if (chg->cp_psy)
+			power_supply_get_property(chg->cp_psy,
+					POWER_SUPPLY_PROP_TI_RESET_CHECK, &val);
+		if (chg->cp_sec_psy)
+			power_supply_get_property(chg->cp_sec_psy,
+					POWER_SUPPLY_PROP_TI_RESET_CHECK, &val);
+
+		/* clear chg_awake wakeup source when charger is absent */
+		vote(chg->awake_votable, CHG_AWAKE_VOTER, false, 0);
+	}
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 
 		/* Check whether charge pump trigger reset after plug out */
 		if (!chg->cp_psy)
@@ -8504,7 +8539,11 @@ void smblib_usb_plugin_locked(struct smb_charger *chg)
 						!chg->vbus_rising, 0);
 
 	power_supply_changed(chg->usb_psy);
+<<<<<<< HEAD
+	smblib_dbg(chg, PR_INTERRUPT, "IRQ: usbin-plugin %s\n",
+=======
 	smblib_dbg(chg, PR_OEM, "IRQ: usbin-plugin %s\n",
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 					chg->vbus_rising ? "attached" : "detached");
 }
 
@@ -8975,7 +9014,14 @@ int smblib_get_adapter_power_max(struct smb_charger *chg)
 			rc = power_supply_get_property(chg->usb_psy,
 						POWER_SUPPLY_PROP_APDO_MAX, &pval);
 			apdo_max = pval.intval;
+<<<<<<< HEAD
+<<<<<<< HEAD
 			pr_info("apdo_max:%d\n", apdo_max);
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+			pr_info("apdo_max:%d\n", apdo_max);
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 
 			if (apdo_max == 65)
 				return APDO_MAX_65W; /* only for J1 65W adapter */
@@ -11506,6 +11552,10 @@ static int smblib_dynamic_recharge_vbat(struct smb_charger *chg)
 	} else
 		return 0;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 	if (chg->batt_psy) {
 		rc = power_supply_set_property(chg->batt_psy,
 				POWER_SUPPLY_PROP_RECHARGE_VBAT,
@@ -11515,11 +11565,30 @@ static int smblib_dynamic_recharge_vbat(struct smb_charger *chg)
 					rc);
 			return -EINVAL;
 		}
+<<<<<<< HEAD
+=======
+	rc = power_supply_set_property(chg->batt_psy,
+			POWER_SUPPLY_PROP_RECHARGE_VBAT,
+			&val);
+	if (rc < 0) {
+		dev_err(chg->dev, "Couldn't set POWER_SUPPLY_PROP_CHARGER_TEMP_MAX rc=%d\n",
+				rc);
+		return -EINVAL;
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
+=======
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 static void batt_update_work(struct work_struct *work)
 {
 	struct smb_charger *chg = container_of(work, struct smb_charger,

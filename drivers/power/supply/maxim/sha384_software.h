@@ -26,4 +26,9 @@
 // sha3_hmac.h - Include file for sha3_hmac module.
 //
 
+<<<<<<< HEAD
+int sha3_256_hmac(unsigned char *key, int key_len, unsigned char *message,
+		  int msg_len, unsigned char *mac);
+=======
 int sha3_256_hmac(unsigned char *key, int key_len, unsigned char *message, int msg_len, unsigned char *mac);
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")

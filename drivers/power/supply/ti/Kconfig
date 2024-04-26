@@ -1,14 +1,57 @@
+<<<<<<< HEAD
+# SPDX-License-Identifier: GPL-2.0-only
+
+menu "TI Technologies, Inc. Charger support"
+
+config PD_POLICY_MANAGER
+	tristate "TI policy manager"
+	depends on I2C
+	help
+	  Say Y to include TI PD policy manager.
+
+config PD_POLICY_MANAGER_DAGU
+	tristate "TI policy manager"
+	depends on I2C
+	help
+	  Say Y to include TI PD policy manager.
+
+config PD_POLICY_MANAGER_MUNCH
+	tristate "TI policy manager"
+	depends on I2C
+	help
+	  Say Y to include TI PD policy manager.
+
+config PD_POLICY_MANAGER_PSYCHE
+	tristate "TI policy manager"
+	depends on I2C
+	help
+	  Say Y to include TI PD policy manager.
+
+config BQ2597X_CHARGE_PUMP
+	tristate "BQ2597X power supply framework based driver"
+	depends on I2C
+	select PD_POLICY_MANAGER
+=======
 menu "TI Technologies, Inc. Charger support"
 
 config BQ2597X_CHARGE_PUMP
 	tristate "BQ2597X power supply framework based driver"
 	depends on I2C
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	help
 	  Say Y to include support for BQ2597X Charge Pump driver based on
 	  power supply framework.
 	  BQ2597X is a div2 charge pump capable of delivering 8A charge current
 	  with very high efficiency.
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+config BQ2597X_CHARGE_PUMP_DAGU
+	tristate "BQ2597X power supply framework based driver"
+	depends on I2C
+	select PD_POLICY_MANAGER_DAGU
+=======
+=======
 config BQ2597X_CHARGE_PUMP_DAGU
 	tristate "BQ2597X power supply framework based driver"
 	depends on I2C
@@ -18,9 +61,11 @@ config BQ2597X_CHARGE_PUMP_DAGU
 	  BQ2597X is a div2 charge pump capable of delivering 8A charge current
 	  with very high efficiency.
 
+>>>>>>> parent of 882b5f822cd1 (Revert "power: supply: Import xiaomi modifications from dagu-s-oss")
 config BQ2597X_CHARGE_PUMP_STANDALONE
 	tristate "BQ2597X power supply framework based driver"
 	depends on I2C
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	help
 	  Say Y to include support for BQ2597X Charge Pump driver based on
 	  power supply framework.
@@ -30,12 +75,18 @@ config BQ2597X_CHARGE_PUMP_STANDALONE
 config BQ2597X_CHARGE_PUMP_STANDALONE_MUNCH
 	tristate "BQ2597X power supply framework based driver"
 	depends on I2C
+<<<<<<< HEAD
+	select PD_POLICY_MANAGER_MUNCH
+=======
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 	help
 	  Say Y to include support for BQ2597X Charge Pump driver based on
 	  power supply framework.
 	  BQ2597X is a div2 charge pump capable of delivering 8A charge current
 	  with very high efficiency.
 
+<<<<<<< HEAD
+=======
 config CHARGER_LN8000
 	tristate "LionSemi LN8000 Battery Charger"
 	depends on I2C
@@ -43,6 +94,7 @@ config CHARGER_LN8000
 	help
 	  Say Y to enable support for the LN8000 charger
 
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 config BQ_PUMP_WIRELESS_CHARGE
 	tristate "BQ2597X wireless dc charge policy driver"
 	depends on I2C
@@ -54,6 +106,11 @@ config DUAL_BQ2597X
 	tristate "BQ2597X power supply framework based driver"
 	depends on I2C
 	help
+<<<<<<< HEAD
+	  Say Y to include support for dual BQ2597X Charge Pump driver based on
+	  power supply framework.
+
+=======
 	 Say Y to include support for dual BQ2597X Charge Pump driver based on
 	 power supply framework.
 
@@ -63,4 +120,5 @@ config CHARGER_LN8000_PSYCHE
 	select REGMAP_I2C
 	help
 	 Say Y to enable support for the LN8000 charger
+>>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
 endmenu
