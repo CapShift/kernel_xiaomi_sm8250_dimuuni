@@ -50,8 +50,4 @@
 #define MAX_HASH_FUNCTIONS 3
 
 extern int hash_size[MAX_HASH_FUNCTIONS];
-<<<<<<< HEAD
-#endif //UCL_HASH
-=======
 #endif//UCL_HASH
->>>>>>> parent of f9ee3b801a81 (Revert "power: supply: Import xiaomi modifications from munch-s-oss")
